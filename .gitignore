@@ -1,0 +1,5 @@
+.*
+.build-harness
+build-harness
+.DS_Store
+*.tgz

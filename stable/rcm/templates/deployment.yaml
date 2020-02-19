@@ -1,0 +1,232 @@
+###############################################################################
+# Licensed Materials - Property of IBM
+# (C) Copyright IBM Corporation 2018, 2019 All Rights Reserved
+# US Government Users Restricted Rights - Use, duplication or disclosure restricted by GSA ADP Schedule Contract with IBM Corp.
+###############################################################################
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.clusterLifecycle.name }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app: {{ .Values.clusterLifecycle.name }}
+    chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
+    component: {{ .Values.clusterLifecycle.name }}
+    heritage: {{ .Release.Service }}
+    release: {{ .Release.Name }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+    app.kubernetes.io/name: {{ .Values.clusterLifecycle.name }}
+    helm.sh/chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
+spec:
+  minReadySeconds: 0
+  replicas: {{ .Values.clusterLifecycle.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ .Values.clusterLifecycle.name }}
+      component: {{ .Values.clusterLifecycle.name }}
+      release: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.clusterLifecycle.name }}
+        component: {{ .Values.clusterLifecycle.name }}
+        release: {{ .Release.Name }}
+        chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
+        heritage: {{ .Release.Service }}
+        app.kubernetes.io/instance: {{ .Release.Name }}
+        app.kubernetes.io/managed-by: {{ .Release.Service }}
+        app.kubernetes.io/name: {{ .Values.clusterLifecycle.name }}
+        helm.sh/chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
+      annotations:
+        productName: "IBM Multi-Cloud Manager"
+        productID: "product-id"
+        productVersion: 3.2.1
+        scheduler.alpha.kubernetes.io/critical-pod: ''
+        seccomp.security.alpha.kubernetes.io/pod: docker/default
+    spec:
+      hostNetwork: false
+      hostPID: false
+      hostIPC: false
+      terminationGracePeriodSeconds: 60
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: beta.kubernetes.io/arch
+                operator: In
+                values:
+                {{- range .Values.arch }}
+                - {{ . }}
+                {{- end }}
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - weight: 100
+            podAffinityTerm:
+              labelSelector:
+                matchExpressions:
+                - key: app
+                  operator: In
+                  values:
+                  - {{ .Values.clusterLifecycle.name }}
+              topologyKey: failure-domain.beta.kubernetes.io/zone
+      tolerations:
+        - key: dedicated
+          operator: Exists
+          effect: NoSchedule
+      containers:
+      {{ if .Values.auditService.config.enabled }}
+      - name: audit-service
+        image: "{{ .Values.auditService.image.repository}}/{{.Values.auditService.image.name}}:{{ .Values.auditService.image.tag }}{{ .Values.imageTagPostfix }}"
+        imagePullPolicy: {{ .Values.auditService.image.pullPolicy }}
+        livenessProbe:
+          exec:
+            command:
+            - sh
+            - -c
+            - pgrep audit
+          initialDelaySeconds: 30
+          timeoutSeconds: 5
+          periodSeconds: 30
+        readinessProbe:
+          exec:
+            command: ["sh", "-c", "exec echo start audit sidecar"]
+          initialDelaySeconds: 10
+          timeoutSeconds: 2
+          periodSeconds: 30
+        securityContext:
+          allowPrivilegeEscalation: false
+          readOnlyRootFilesystem: true
+          privileged: false
+          capabilities:
+            drop:
+            - ALL
+        env:
+          - name: LOGROTATE
+            valueFrom:
+              configMapKeyRef:
+                name: {{ .Values.clusterLifecycle.name }}
+                key: LOGROTATE
+          - name: LOGROTATE_CONF
+            valueFrom:
+              configMapKeyRef:
+                name: {{ .Values.clusterLifecycle.name }}
+                key: LOGROTATE_CONF
+        resources:
+{{ toYaml .Values.auditService.resources | indent 10 }}
+        volumeMounts:
+        - name: journal
+          mountPath: {{ .Values.auditService.config.journalPath }}
+        - name: shared
+          mountPath: {{ .Values.auditService.config.auditLogPath }}
+        - name: logrotate
+          mountPath: "/etc/logrotate.d/audit"
+          subPath: audit
+        - name: logrotate-conf
+          mountPath: "/etc/logrotate.conf"
+          subPath: logrotate.conf
+      {{ end }}
+      - name: rcm
+        image: "{{ .Values.clusterLifecycle.image.repository}}/{{.Values.clusterLifecycle.image.name}}:{{ .Values.clusterLifecycle.image.tag }}{{ .Values.imageTagPostfix }}"
+        imagePullPolicy: {{ .Values.clusterLifecycle.image.pullPolicy }}
+        resources:
+{{ toYaml .Values.clusterLifecycle.resources | indent 10 }}
+        securityContext:
+          allowPrivilegeEscalation: false
+          privileged: false
+          readOnlyRootFilesystem: true
+          capabilities:
+            drop:
+            - ALL
+        readinessProbe:
+          httpGet:
+            path: "/v1"
+            scheme: HTTP
+            port: 8060
+        livenessProbe:
+          httpGet:
+            path: "/v1"
+            scheme: HTTP
+            port: 8060
+        env:
+          - name: SERVICE_NAME
+            value: {{ .Values.clusterLifecycle.name }}
+          - name: LOG_LEVEL
+            value: "info"
+          - name: CONTEXT_ROOT
+            value: "/rcm"
+          - name: CONTROLLER_CONFIGMAP
+            value: {{ .Values.clusterLifecycle.name }}
+          - name: IAM_URL
+            valueFrom:
+              configMapKeyRef:
+                name: {{ .Values.clusterLifecycle.name }}
+                key: IDENTITY_PROVIDER_URL
+          - name: IDENTITY_MGMT_URL
+            valueFrom:
+              configMapKeyRef:
+                name: {{ .Values.clusterLifecycle.name }}
+                key: IDENTITY_MGMT_URL
+          - name: OIDC_URL
+            valueFrom:
+              configMapKeyRef:
+                name: {{ .Values.clusterLifecycle.name }}
+                key: OIDC_URL
+          - name: POD_NAME
+            valueFrom:
+              fieldRef:
+                fieldPath: metadata.name
+          - name: POD_NAMESPACE
+            valueFrom:
+              fieldRef:
+                fieldPath: metadata.namespace
+          - name: AUDIT_ENABLED
+            valueFrom:
+              configMapKeyRef:
+                name: {{ .Values.clusterLifecycle.name }}
+                key: AUDIT_ENABLED
+          - name: AUDIT_LOG_PATH
+            valueFrom:
+              configMapKeyRef:
+                name: {{ .Values.clusterLifecycle.name }}
+                key: AUDIT_LOG_PATH
+        volumeMounts:
+          {{ if .Values.auditService.config.enabled }}
+          - name: shared
+            mountPath: {{ .Values.auditService.config.auditLogPath }}
+          {{ end }}
+    {{- if .Values.clusterLifecycle.nodeSelector }}
+      nodeSelector:
+{{ toYaml .Values.clusterLifecycle.nodeSelector | indent 8 }}
+    {{- end }}
+      volumes:
+        {{ if .Values.auditService.config.enabled }}
+        - name: journal
+          hostPath:
+            path: {{ .Values.auditService.config.journalPath }}
+        - name: shared
+          emptyDir: {}
+        - configMap:
+            defaultMode: 420
+            items:
+            - key: LOGROTATE
+              path: audit
+            name: {{ .Values.clusterLifecycle.name }}
+          name: logrotate
+        - configMap:
+            defaultMode: 420
+            items:
+            - key: LOGROTATE_CONF
+              path: logrotate.conf
+            name: {{ .Values.clusterLifecycle.name }}
+          name: logrotate-conf
+        {{ end }}
+      {{- if .Values.clusterLifecycle.image.pullSecret }}
+      imagePullSecrets:
+      - name: {{ .Values.clusterLifecycle.image.pullSecret }}
+      {{- end }}

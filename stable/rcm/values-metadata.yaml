@@ -1,0 +1,310 @@
+###############################################################################
+# Licensed Materials - Property of IBM
+# (C) Copyright IBM Corporation 2018, 2019 All Rights Reserved
+# US Government Users Restricted Rights - Use, duplication or disclosure restricted by GSA ADP Schedule Contract with IBM Corp.
+###############################################################################
+
+## Metadata for cluster lifecycle management configuration
+## This metadata is used to drive configuration of the Helm chart installation
+
+
+arch:
+  __metadata:
+    name: "Architecture"
+    label: "Architecture scheduling preference"
+    description: "Architecture scheduling preference for worker node"
+    immutable: true
+    required: true
+    hidden: true
+    options:
+      - label: "amd64"
+        value: "amd64"
+      - label: "ppc64le"
+        value: "ppc64le"
+      - label: "s390x"
+        value: "s390x"
+
+clusterLifecycle:
+  __metadata:
+    label: "Multicloud Manager cluster lifecycle management"
+    description: "Cluster lifecycle management for Multicloud Manager"
+  name:
+    __metadata:
+      name: "name"
+      label: "Name"
+      description: "Name of the cluster lifecycle container"
+      type: "string"
+      immutable: false
+      required: true
+  replicaCount:
+    __metadata:
+      name: "replicaCount"
+      label: "Replica count"
+      description: "Number of replica pods"
+      type: "number"
+      immutable: false
+      required: true
+  image:
+    repository:
+      __metadata:
+        label: "Cluster lifecycle Image Repository"
+        description: "Image Repository for Cluster lifecycle"
+        type: "string"
+        immutable: false
+        required: false
+    name:
+      __metadata:
+        label: "Cluster lifecycle Image name"
+        description: "Image for Cluster lifecycle"
+        type: "string"
+        immutable: false
+        required: false
+    tag:
+      __metadata:
+        label: "Cluster lifecycle Image Tag"
+        description: "Tag of Cluster lifecycle Image"
+        type: "string"
+        immutable: false
+        required: false
+    pullPolicy:
+      __metadata:
+        label: "Cluster lifecycle Image Pull Policy"
+        description:  "Image Pull Policy for Cluster lifecycle"
+        type: "string"
+        required: false
+        options:
+        - label: "IfNotPresent"
+          value: "IfNotPresent"
+        - label: "Always"
+          value: "Always"
+        - label: "Never"
+          value: "Never"
+  resources:
+    requests:
+      memory:
+        __metadata:
+          label: "Memory request"
+          description: "Resource request of memory"
+          type: "string"
+          immutable: false
+          required: false
+      cpu:
+        __metadata:
+          label: "CPU request"
+          description: "Resource request of CPU"
+          type: "string"
+          immutable: false
+          required: false
+    limits:
+      memory:
+        __metadata:
+          label: "Memory limit"
+          description: "Resource limit of memory"
+          type: "string"
+          immutable: false
+          required: false
+      cpu:
+        __metadata:
+          label: "CPU limit"
+          description: "Resource limit of CPU"
+          type: "string"
+          immutable: false
+          required: false
+  controller:
+    defaultPullSecret:
+      __metadata:
+        label: "Default Kubernetes Pull Secret"
+        description: "Default Kubernetes pull secret for multicluster endpoint import and upgrade"
+        type: "string"
+        immutable: false
+        required: false
+    defaultRepository:
+      __metadata:
+        label: "Default Image Repository"
+        description: "Default image repository used for MCM images"
+        type: "string"
+        immutable: false
+        required: false
+auditService:
+  image:
+    repository:
+      __metadata:
+        label: "Audit Service Image Repository"
+        description: "Image Repository for Audit Service"
+        type: "string"
+        immutable: false
+        required: false
+    name:
+      __metadata:
+        label: "Audit service Image name"
+        description: "Image for Audit service"
+        type: "string"
+        immutable: false
+        required: false
+    tag:
+      __metadata:
+        label: "Audit Service Image Tag"
+        description: "Tag of Audit Service Image"
+        type: "string"
+        immutable: false
+        required: false
+    pullPolicy:
+      __metadata:
+        label: "Audit Service Image Pull Policy"
+        description:  "Image Pull Policy for Audit Service"
+        type: "string"
+        required: false
+        options:
+        - label: "IfNotPresent"
+          value: "IfNotPresent"
+        - label: "Always"
+          value: "Always"
+        - label: "Never"
+          value: "Never"
+  resources:
+    requests:
+      memory:
+        __metadata:
+          label: "Memory request"
+          description: "Resource request of memory"
+          type: "string"
+          immutable: false
+          required: false
+      cpu:
+        __metadata:
+          label: "CPU request"
+          description: "Resource request of CPU"
+          type: "string"
+          immutable: false
+          required: false
+    limits:
+      memory:
+        __metadata:
+          label: "Memory limit"
+          description: "Resource limit of memory"
+          type: "string"
+          immutable: false
+          required: false
+      cpu:
+        __metadata:
+          label: "CPU limit"
+          description: "Resource limit of CPU"
+          type: "string"
+          immutable: false
+          required: false
+  config:
+    enabled:
+      __metadata:
+        name: "enabled"
+        label: "enabled key"
+        description: "The audit service: The enabled"
+        type: "boolean"
+        immutable: false
+        required: true
+    auditEnabled:
+      __metadata:
+        name: "auditEnabled"
+        label: "Audit enabled"
+        description: "The audit service: The audit enabled"
+        type: "boolean"
+        immutable: false
+        required: true
+    journalPath:
+      __metadata:
+        name: "journalPath"
+        label: "Journal path"
+        description: "The audit service: The journal path"
+        type: "string"
+        immutable: false
+        required: true
+    auditLogPath:
+      __metadata:
+        name: "auditLogPath"
+        label: "Audit log path"
+        description: "The audit service: The audit log path"
+        type: "string"
+        immutable: false
+        required: true
+    logrotate:
+      __metadata:
+        name: "logrotate"
+        label: "Log rotate"
+        description: "The audit service: The logrotate"
+        type: "string"
+        immutable: false
+        required: true
+    logrotateConf:
+      __metadata:
+        name: "logrotateConf"
+        label: "Log rotate conf"
+        description: "The audit service: The log rotate conf"
+        type: "string"
+        immutable: false
+        required: true
+clusterController:
+  image:
+    repository:
+      __metadata:
+        label: "Cluster lifecycle controller api Image Repository"
+        description: "Image Repository for Cluster lifecycle controller"
+        type: "string"
+        immutable: false
+        required: false
+    name:
+      __metadata:
+        label: "Cluster lifecycle controller Image name"
+        description: "Image for Cluster lifecycle controller"
+        type: "string"
+        immutable: false
+        required: false
+    tag:
+      __metadata:
+        label: "Cluster lifecycle controller Image Tag"
+        description: "Tag of Cluster lifecycle controller Image"
+        type: "string"
+        immutable: false
+        required: false
+    pullPolicy:
+      __metadata:
+        label: "Cluster lifecycle controller Image Pull Policy"
+        description:  "Image Pull Policy for Cluster lifecycle controller"
+        type: "string"
+        required: false
+        options:
+        - label: "IfNotPresent"
+          value: "IfNotPresent"
+        - label: "Always"
+          value: "Always"
+        - label: "Never"
+          value: "Never"
+  resources:
+    requests:
+      memory:
+        __metadata:
+          label: "Memory request"
+          description: "Resource request of memory"
+          type: "string"
+          immutable: false
+          required: false
+      cpu:
+        __metadata:
+          label: "CPU request"
+          description: "Resource request of CPU"
+          type: "string"
+          immutable: false
+          required: false
+    limits:
+      memory:
+        __metadata:
+          label: "Memory limit"
+          description: "Resource limit of memory"
+          type: "string"
+          immutable: false
+          required: false
+      cpu:
+        __metadata:
+          label: "CPU limit"
+          description: "Resource limit of CPU"
+          type: "string"
+          immutable: false
+          required: false
