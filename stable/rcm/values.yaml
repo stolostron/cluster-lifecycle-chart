@@ -12,11 +12,11 @@ arch:
 imageTagPostfix: ""
 
 clusterLifecycle:
-  name: rcm
+  name: rcm-api
   replicaCount: 1
   image:
     repository: quay.io/open-cluster-management
-    name: mcm-rcm-api
+    name: rcm-api
     tag: 1.0.0
     pullPolicy: Always
     pullSecret: null
@@ -34,11 +34,11 @@ clusterLifecycle:
     defaultRepository: ""
 
 clusterController:
-  name: rcm-cluster-controller
+  name: rcm-controller
   replicaCount: 1
   image:
     repository: quay.io/open-cluster-management
-    name: multicloud-operators-cluster-controller
+    name: rcm-controller
     tag: 1.0.0
     pullPolicy: Always
     pullSecret: null
