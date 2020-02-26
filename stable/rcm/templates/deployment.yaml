@@ -80,57 +80,6 @@ spec:
           operator: Exists
           effect: NoSchedule
       containers:
-      {{ if .Values.auditService.config.enabled }}
-      - name: audit-service
-        image: "{{ .Values.auditService.image.repository}}/{{.Values.auditService.image.name}}:{{ .Values.auditService.image.tag }}{{ .Values.imageTagPostfix }}"
-        imagePullPolicy: {{ .Values.auditService.image.pullPolicy }}
-        livenessProbe:
-          exec:
-            command:
-            - sh
-            - -c
-            - pgrep audit
-          initialDelaySeconds: 30
-          timeoutSeconds: 5
-          periodSeconds: 30
-        readinessProbe:
-          exec:
-            command: ["sh", "-c", "exec echo start audit sidecar"]
-          initialDelaySeconds: 10
-          timeoutSeconds: 2
-          periodSeconds: 30
-        securityContext:
-          allowPrivilegeEscalation: false
-          readOnlyRootFilesystem: true
-          privileged: false
-          capabilities:
-            drop:
-            - ALL
-        env:
-          - name: LOGROTATE
-            valueFrom:
-              configMapKeyRef:
-                name: {{ .Values.clusterLifecycle.name }}
-                key: LOGROTATE
-          - name: LOGROTATE_CONF
-            valueFrom:
-              configMapKeyRef:
-                name: {{ .Values.clusterLifecycle.name }}
-                key: LOGROTATE_CONF
-        resources:
-{{ toYaml .Values.auditService.resources | indent 10 }}
-        volumeMounts:
-        - name: journal
-          mountPath: {{ .Values.auditService.config.journalPath }}
-        - name: shared
-          mountPath: {{ .Values.auditService.config.auditLogPath }}
-        - name: logrotate
-          mountPath: "/etc/logrotate.d/audit"
-          subPath: audit
-        - name: logrotate-conf
-          mountPath: "/etc/logrotate.conf"
-          subPath: logrotate.conf
-      {{ end }}
       - name: rcm
         image: "{{ .Values.clusterLifecycle.image.repository}}/{{.Values.clusterLifecycle.image.name}}:{{ .Values.clusterLifecycle.image.tag }}{{ .Values.imageTagPostfix }}"
         imagePullPolicy: {{ .Values.clusterLifecycle.image.pullPolicy }}
@@ -185,47 +134,10 @@ spec:
             valueFrom:
               fieldRef:
                 fieldPath: metadata.namespace
-          - name: AUDIT_ENABLED
-            valueFrom:
-              configMapKeyRef:
-                name: {{ .Values.clusterLifecycle.name }}
-                key: AUDIT_ENABLED
-          - name: AUDIT_LOG_PATH
-            valueFrom:
-              configMapKeyRef:
-                name: {{ .Values.clusterLifecycle.name }}
-                key: AUDIT_LOG_PATH
-        volumeMounts:
-          {{ if .Values.auditService.config.enabled }}
-          - name: shared
-            mountPath: {{ .Values.auditService.config.auditLogPath }}
-          {{ end }}
     {{- if .Values.clusterLifecycle.nodeSelector }}
       nodeSelector:
 {{ toYaml .Values.clusterLifecycle.nodeSelector | indent 8 }}
     {{- end }}
-      volumes:
-        {{ if .Values.auditService.config.enabled }}
-        - name: journal
-          hostPath:
-            path: {{ .Values.auditService.config.journalPath }}
-        - name: shared
-          emptyDir: {}
-        - configMap:
-            defaultMode: 420
-            items:
-            - key: LOGROTATE
-              path: audit
-            name: {{ .Values.clusterLifecycle.name }}
-          name: logrotate
-        - configMap:
-            defaultMode: 420
-            items:
-            - key: LOGROTATE_CONF
-              path: logrotate.conf
-            name: {{ .Values.clusterLifecycle.name }}
-          name: logrotate-conf
-        {{ end }}
       {{- if .Values.clusterLifecycle.image.pullSecret }}
       imagePullSecrets:
       - name: {{ .Values.clusterLifecycle.image.pullSecret }}

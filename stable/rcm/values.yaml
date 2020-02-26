@@ -9,6 +9,7 @@ arch:
   - amd64
   - ppc64le
   - s390x
+imageTagPostfix: ""
 
 clusterLifecycle:
   name: rcm
@@ -31,38 +32,6 @@ clusterLifecycle:
   controller:
     defaultPullSecret: infra-registry-key
     defaultRepository: ""
-
-imageTagPostfix: ""
-
-auditService:
-  image:
-    repository: quay.io/open-cluster-management
-    name: icp-audit-service
-    tag: 3.3.1
-    pullPolicy: Always
-  resources:
-    requests:
-      memory: "64Mi"
-      cpu: "25m"
-    limits:
-      memory: "512Mi"
-      cpu: "100m"
-  config:
-    enabled: true
-    auditEnabled: false
-    journalPath: /run/systemd/journal
-    auditLogPath: /var/log/audit
-    logrotate: |-
-      /var/log/audit/*.log {
-        su root root
-        copytruncate
-        rotate 24
-        hourly
-        missingok
-        notifempty
-      }
-    logrotateConf: |-
-      include /etc/logrotate.d
 
 clusterController:
   name: rcm-cluster-controller

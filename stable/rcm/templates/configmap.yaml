@@ -20,15 +20,6 @@ metadata:
     app.kubernetes.io/name: {{ .Values.clusterLifecycle.name }}
     helm.sh/chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
 data:
-  IDENTITY_PROVIDER_URL: "https://platform-identity-provider:4300"
-  OIDC_URL: "https://platform-auth-service:9443"
-  IDENTITY_MGMT_URL: "https://platform-identity-management:4500"
-  AUDIT_ENABLED: "{{ .Values.auditService.config.auditEnabled }}"
-  AUDIT_LOG_PATH: "{{ .Values.auditService.config.auditLogPath }}"
-  LOGROTATE: |-
-{{ .Values.auditService.config.logrotate | indent 4 }}
-  LOGROTATE_CONF: |-
-{{ .Values.auditService.config.logrotateConf | indent 4 }}
   defaultPullSecret: "{{ .Values.clusterLifecycle.controller.defaultPullSecret }}"
   defaultRepository: "{{ .Values.clusterLifecycle.controller.defaultRepository }}"
   endpointVersions: 3.4.0
