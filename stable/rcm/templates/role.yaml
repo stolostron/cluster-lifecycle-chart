@@ -69,3 +69,9 @@ rules:
   - '*'
   verbs:
   - '*'
+- apiGroups:
+  - config.openshift.io
+  resources:
+  - infrastructures
+  verbs:
+  - get

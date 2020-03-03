@@ -45,6 +45,7 @@ spec:
         productVersion: 3.2.1
         scheduler.alpha.kubernetes.io/critical-pod: ''
     spec:
+      serviceAccountName: {{ .Values.clusterController.name }}
       hostNetwork: false
       hostPID: false
       hostIPC: false
