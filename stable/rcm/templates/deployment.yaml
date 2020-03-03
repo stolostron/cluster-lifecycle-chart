@@ -44,7 +44,6 @@ spec:
         productID: "product-id"
         productVersion: 3.2.1
         scheduler.alpha.kubernetes.io/critical-pod: ''
-        seccomp.security.alpha.kubernetes.io/pod: docker/default
     spec:
       hostNetwork: false
       hostPID: false
@@ -52,7 +51,6 @@ spec:
       terminationGracePeriodSeconds: 60
       securityContext:
         runAsNonRoot: true
-        runAsUser: 1000
       affinity:
         nodeAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:
