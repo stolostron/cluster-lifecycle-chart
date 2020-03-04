@@ -96,5 +96,7 @@ spec:
                 fieldPath: metadata.name
           - name: OPERATOR_NAME
             value: {{ .Values.clusterController.name }}
+          - name: IMAGE_TAG_POSTFIX
+            value: {{ .Values.imageTagPostfix }}
       nodeSelector:
 {{ toYaml .Values.clusterController.nodeSelector | indent 8 }}

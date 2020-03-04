@@ -75,3 +75,22 @@ rules:
   - infrastructures
   verbs:
   - get
+  - list
+- apiGroups:
+  - clusterregistry.k8s.io
+  resources:
+  - '*'
+  verbs:
+  - '*'
+- apiGroups:
+  - hive.openshift.io
+  resources:
+  - '*'
+  verbs:
+  - '*'
+- apiGroups:
+  - mcm.ibm.com
+  resources:
+  - '*'
+  verbs:
+  - '*'
