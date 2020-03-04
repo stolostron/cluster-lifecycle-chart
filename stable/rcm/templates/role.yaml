@@ -76,6 +76,7 @@ rules:
   verbs:
   - get
   - list
+  - watch
 - apiGroups:
   - clusterregistry.k8s.io
   resources:
