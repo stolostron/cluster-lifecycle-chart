@@ -95,7 +95,6 @@ rules:
   - '*'
   verbs:
   - '*'
-
 - apiGroups:
   - ''
   resources:
