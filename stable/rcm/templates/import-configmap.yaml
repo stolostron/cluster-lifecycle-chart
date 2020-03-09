@@ -4,15 +4,16 @@ metadata:
   name: {{ .Values.clusterLifecycle.import.name }}
   namespace: {{ .Release.Namespace }}
   labels:
-    app: {{ .Values.clusterLifecycle.import.name }}
+    app: {{ .Values.clusterLifecycle.name }}
     chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
-    component: {{ .Values.clusterLifecycle.import.name }}
+    component: {{ .Values.clusterLifecycle.name }}
     heritage: {{ .Release.Service }}
     release: {{ .Release.Name }}
     app.kubernetes.io/instance: {{ .Release.Name }}
     app.kubernetes.io/managed-by: {{ .Release.Service }}
-    app.kubernetes.io/name: {{ .Values.clusterLifecycle.import.name }}
+    app.kubernetes.io/name: {{ .Values.clusterLifecycle.name }}
     helm.sh/chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
+    config: {{ .Values.clusterLifecycle.import.name }}
 data:
   ## Cluster Configurations
   clusterName: "cluster-name"
