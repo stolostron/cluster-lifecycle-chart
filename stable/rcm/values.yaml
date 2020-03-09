@@ -32,6 +32,8 @@ clusterLifecycle:
   controller:
     defaultPullSecret: infra-registry-key
     defaultRepository: ""
+  import:
+    name: "cluster-import-config"
 
 clusterController:
   name: rcm-controller
