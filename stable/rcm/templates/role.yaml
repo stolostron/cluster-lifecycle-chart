@@ -25,6 +25,8 @@ rules:
   - events
   - configmaps
   - secrets
+  - serviceaccounts
+  - namespaces
   verbs:
   - '*'
 - apiGroups:
@@ -95,11 +97,3 @@ rules:
   - '*'
   verbs:
   - '*'
-- apiGroups:
-  - ''
-  resources:
-  - 'serviceaccounts'
-  verbs:
-  - 'list'
-  - 'watch'
-  - 'create'
