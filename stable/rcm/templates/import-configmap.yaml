@@ -53,8 +53,8 @@ data:
     plugins: "kube-service"
 
   ## Image Registry Configurations
-  # private_registry_enabled: false
-  # docker_username:
-  # docker_password:
+  # privateRegistryEnabled: false
+  # registryUsername:
+  # registryPassword:
   # imageRegistry:
   # imageNamePostfix:
