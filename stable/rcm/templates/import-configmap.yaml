@@ -18,6 +18,7 @@ data:
   import.yaml: |-
     clusterName: 'cluster-name'
     clusterNamespace: 'cluster-namespace'
+
     clusterLabels:
       cloud: "auto-detect"
       vendor: "auto-detect"
@@ -50,10 +51,11 @@ data:
       enabled: true
       dnsSuffix: "mcm.svc"
       plugins: "kube-service"
-
+    
     ## Image Registry Configurations
+    imageRegistry: quay.io/open-cluster-management
     # privateRegistryEnabled: false
     # registryUsername:
     # registryPassword:
-    # imageRegistry:
-    # imageNamePostfix:
+
+    version: '1.0.0'
