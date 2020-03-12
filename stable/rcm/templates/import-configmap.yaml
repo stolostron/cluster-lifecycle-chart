@@ -52,15 +52,15 @@ data:
       dnsSuffix: "mcm.svc"
       plugins: "kube-service"
 
-    # Configure the certificate policy controller feature
+    # Configure the CertificatePolicy controller feature
     certPolicyController:
       enabled: true
     
-    # Configure the CIS controller feature
+    # Configure the CisPolicy controller feature
     cisController:
       enabled: true
 
-    # Configure the IAM policy controller feature
+    # Configure the IamPolicy controller feature
     iamPolicyController:
       enabled: true
     
