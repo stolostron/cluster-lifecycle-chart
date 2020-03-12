@@ -51,6 +51,18 @@ data:
       enabled: true
       dnsSuffix: "mcm.svc"
       plugins: "kube-service"
+
+    # Configure the CertificatePolicy controller feature
+    certPolicyController:
+      enabled: true
+    
+    # Configure the CisPolicy controller feature
+    cisController:
+      enabled: true
+
+    # Configure the IamPolicy controller feature
+    iamPolicyController:
+      enabled: true
     
     ## Image Registry Configurations
     imageRegistry: quay.io/open-cluster-management
