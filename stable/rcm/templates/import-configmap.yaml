@@ -15,46 +15,45 @@ metadata:
     helm.sh/chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
     config: "cluster-import-config"
 data:
-  ## Cluster Configurations
-  clusterName: "cluster-name"
-  clusterNamespace: "cluster-namespace"
+  import.yaml: |-
+    clusterName: 'cluster-name'
+    clusterNamespace: 'cluster-namespace'
+    clusterLabels:
+      cloud: "auto-detect"
+      vendor: "auto-detect"
+      # environment: "Dev"
+      # region: "US"
 
-  clusterLabels:
-    cloud: "auto-detect"
-    vendor: "auto-detect"
-    # environment: "Dev"
-    # region: "US"
+    # Configure application management feature
+    applicationManager:
+      enabled: true
 
-  # Configure application management feature
-  applicationManager:
-    enabled: true
+    # Configure monitoring for metric collection
+    prometheusIntegration:
+      enabled: true
 
-  # Configure monitoring for metric collection
-  prometheusIntegration:
-    enabled: true
+    # Configure gathering of cluster topology data
+    topologyCollector:
+      enabled: true
+      updateInterval: 15
 
-  # Configure gathering of cluster topology data
-  topologyCollector:
-    enabled: true
-    updateInterval: 15
+    # Configure indexing for multicluster search feature
+    searchCollector:
+      enabled: true
 
-  # Configure indexing for multicluster search feature
-  searchCollector:
-    enabled: true
+    # Configure multicluster GRC policy feature
+    policyController:
+      enabled: true
 
-  # Configure multicluster GRC policy feature
-  policyController:
-    enabled: true
+    # Configure multicluster service registry feature
+    serviceRegistry:
+      enabled: true
+      dnsSuffix: "mcm.svc"
+      plugins: "kube-service"
 
-  # Configure multicluster service registry feature
-  serviceRegistry:
-    enabled: true
-    dnsSuffix: "mcm.svc"
-    plugins: "kube-service"
-
-  ## Image Registry Configurations
-  # privateRegistryEnabled: false
-  # registryUsername:
-  # registryPassword:
-  # imageRegistry:
-  # imageNamePostfix:
+    ## Image Registry Configurations
+    # privateRegistryEnabled: false
+    # registryUsername:
+    # registryPassword:
+    # imageRegistry:
+    # imageNamePostfix:
