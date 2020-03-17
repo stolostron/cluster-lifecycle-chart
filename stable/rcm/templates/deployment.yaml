@@ -110,10 +110,6 @@ spec:
             value: "/rcm"
           - name: CONTROLLER_CONFIGMAP
             value: {{ .Values.clusterLifecycle.name }}
-          - name: DEFAULT_IMAGE_PULL_SECRET
-            value: {{ .Values.imagePullSecret }}
-          - name: DEFAULT_IMAGE_REGISTRY
-            value: {{ .Values.imageRepository }}
           - name: POD_NAME
             valueFrom:
               fieldRef:

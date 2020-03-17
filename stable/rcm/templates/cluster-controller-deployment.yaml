@@ -98,5 +98,9 @@ spec:
             value: {{ .Values.clusterController.name }}
           - name: IMAGE_TAG_POSTFIX
             value: {{ .Values.imageTagPostfix }}
+          - name: DEFAULT_IMAGE_PULL_SECRET
+            value: {{ .Values.imagePullSecret }}
+          - name: DEFAULT_IMAGE_REGISTRY
+            value: {{ .Values.imageRepository }}
       nodeSelector:
 {{ toYaml .Values.clusterController.nodeSelector | indent 8 }}
