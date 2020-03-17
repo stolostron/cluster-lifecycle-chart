@@ -102,5 +102,9 @@ spec:
             value: {{ .Values.imagePullSecret }}
           - name: DEFAULT_IMAGE_REGISTRY
             value: {{ .Values.imageRepository }}
+          - name: POD_NAMESPACE
+            valueFrom:
+              fieldRef:
+                fieldPath: metadata.namespace
       nodeSelector:
 {{ toYaml .Values.clusterController.nodeSelector | indent 8 }}
