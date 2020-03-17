@@ -10,6 +10,8 @@ arch:
   - ppc64le
   - s390x
 imageTagPostfix: ""
+imagePullSecret: ""
+imageRepository: ""
 
 clusterLifecycle:
   name: rcm-api
