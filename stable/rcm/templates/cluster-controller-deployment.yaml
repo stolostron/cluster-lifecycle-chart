@@ -106,5 +106,7 @@ spec:
             valueFrom:
               fieldRef:
                 fieldPath: metadata.namespace
+    {{- if .Values.clusterLifecycle.nodeSelector }}
       nodeSelector:
-{{ toYaml .Values.clusterController.nodeSelector | indent 8 }}
+{{ toYaml .Values.clusterLifecycle.nodeSelector | indent 8 }}
+    {{- end }}

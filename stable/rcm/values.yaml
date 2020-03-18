@@ -29,8 +29,6 @@ clusterLifecycle:
     limits:
       memory: "256Mi"
       cpu: "500m"
-    nodeSelector:
-      master: "true"
   controller:
     defaultPullSecret: infra-registry-key
     defaultRepository: ""
@@ -53,5 +51,3 @@ clusterController:
     limits:
       memory: "256Mi"
       cpu: "500m"
-    nodeSelector:
-      master: "true"
