@@ -7,44 +7,48 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ .Values.clusterLifecycle.name }}
+  name: {{ .Values.clusterController.name }}
   namespace: {{ .Release.Namespace }}
   labels:
-    app: {{ .Values.clusterLifecycle.name }}
+    app: {{ .Values.clusterController.name }}
     chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
-    component: {{ .Values.clusterLifecycle.name }}
+    component: {{ .Values.clusterController.name }}
     heritage: {{ .Release.Service }}
     release: {{ .Release.Name }}
     app.kubernetes.io/instance: {{ .Release.Name }}
     app.kubernetes.io/managed-by: {{ .Release.Service }}
-    app.kubernetes.io/name: {{ .Values.clusterLifecycle.name }}
+    app.kubernetes.io/name: {{ .Values.clusterController.name }}
     helm.sh/chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
 spec:
   minReadySeconds: 0
-  replicas: {{ .Values.clusterLifecycle.replicaCount }}
+  replicas: {{ .Values.clusterController.replicaCount }}
   selector:
     matchLabels:
-      app: {{ .Values.clusterLifecycle.name }}
-      component: {{ .Values.clusterLifecycle.name }}
+      app: {{ .Values.clusterController.name }}
+      component: {{ .Values.clusterController.name }}
       release: {{ .Release.Name }}
   template:
     metadata:
       labels:
-        app: {{ .Values.clusterLifecycle.name }}
-        component: {{ .Values.clusterLifecycle.name }}
+        app: {{ .Values.clusterController.name }}
+        component: {{ .Values.clusterController.name }}
         release: {{ .Release.Name }}
         chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
         heritage: {{ .Release.Service }}
         app.kubernetes.io/instance: {{ .Release.Name }}
         app.kubernetes.io/managed-by: {{ .Release.Service }}
-        app.kubernetes.io/name: {{ .Values.clusterLifecycle.name }}
+        app.kubernetes.io/name: {{ .Values.clusterController.name }}
         helm.sh/chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
       annotations:
         productName: "IBM Multi-Cloud Manager"
         productID: "product-id"
-        productVersion: 3.2.1
+        productVersion: 1.0.0
         scheduler.alpha.kubernetes.io/critical-pod: ''
     spec:
+    {{- if .Values.clusterController.image.pullSecret }}
+      imagePullSecrets:
+        - name: {{ .Values.clusterController.image.pullSecret }}
+    {{- end }}
       serviceAccountName: {{ .Values.clusterController.name }}
       hostNetwork: false
       hostPID: false
@@ -72,57 +76,37 @@ spec:
                 - key: app
                   operator: In
                   values:
-                  - {{ .Values.clusterLifecycle.name }}
+                  - {{ .Values.clusterController.name }}
               topologyKey: failure-domain.beta.kubernetes.io/zone
       tolerations:
         - key: dedicated
           operator: Exists
           effect: NoSchedule
       containers:
-      - name: rcm
-        image: "{{ .Values.clusterLifecycle.image.repository}}/{{.Values.clusterLifecycle.image.name}}:{{ .Values.clusterLifecycle.image.tag }}{{ .Values.imageTagPostfix }}"
-        imagePullPolicy: {{ .Values.clusterLifecycle.image.pullPolicy }}
+      - name: cluster-controller
+        image: "{{ .Values.clusterController.image.repository}}/{{.Values.clusterController.image.name}}:{{ .Values.clusterController.image.tag }}{{ .Values.imageTagPostfix }}"
+        imagePullPolicy: {{ .Values.clusterController.image.pullPolicy }}
         resources:
-{{ toYaml .Values.clusterLifecycle.resources | indent 10 }}
-        securityContext:
-          allowPrivilegeEscalation: false
-          privileged: false
-          readOnlyRootFilesystem: true
-          capabilities:
-            drop:
-            - ALL
-        readinessProbe:
-          httpGet:
-            path: "/v1"
-            scheme: HTTP
-            port: 8060
-        livenessProbe:
-          httpGet:
-            path: "/v1"
-            scheme: HTTP
-            port: 8060
+{{ toYaml .Values.clusterController.resources | indent 10 }}
         env:
-          - name: SERVICE_NAME
-            value: {{ .Values.clusterLifecycle.name }}
-          - name: LOG_LEVEL
-            value: "info"
-          - name: CONTEXT_ROOT
-            value: "/rcm"
-          - name: CONTROLLER_CONFIGMAP
-            value: {{ .Values.clusterLifecycle.name }}
+          - name: WATCH_NAMESPACE
           - name: POD_NAME
             valueFrom:
               fieldRef:
                 fieldPath: metadata.name
+          - name: OPERATOR_NAME
+            value: {{ .Values.clusterController.name }}
+          - name: IMAGE_TAG_POSTFIX
+            value: {{ .Values.imageTagPostfix }}
+          - name: DEFAULT_IMAGE_PULL_SECRET
+            value: {{ .Values.imagePullSecret }}
+          - name: DEFAULT_IMAGE_REGISTRY
+            value: {{ .Values.imageRepository }}
           - name: POD_NAMESPACE
             valueFrom:
               fieldRef:
                 fieldPath: metadata.namespace
-    {{- if .Values.clusterLifecycle.nodeSelector }}
+    {{- if .Values.clusterController.nodeSelector }}
       nodeSelector:
-{{ toYaml .Values.clusterLifecycle.nodeSelector | indent 8 }}
+{{ toYaml .Values.clusterController.nodeSelector | indent 8 }}
     {{- end }}
-      {{- if .Values.clusterLifecycle.image.pullSecret }}
-      imagePullSecrets:
-      - name: {{ .Values.clusterLifecycle.image.pullSecret }}
-      {{- end }}
