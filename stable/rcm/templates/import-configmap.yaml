@@ -16,8 +16,8 @@ metadata:
     config: "cluster-import-config"
 data:
   import.yaml: |-
-    clusterName: 'cluster-name'
-    clusterNamespace: 'cluster-namespace'
+    clusterName: "cluster-name"
+    clusterNamespace: "cluster-namespace"
 
     clusterLabels:
       cloud: "auto-detect"
@@ -29,21 +29,12 @@ data:
     applicationManager:
       enabled: true
 
-    # Configure monitoring for metric collection
-    prometheusIntegration:
+    # Configure multicluster GRC policy feature
+    policyController:
       enabled: true
-
-    # Configure gathering of cluster topology data
-    topologyCollector:
-      enabled: true
-      updateInterval: 15
 
     # Configure indexing for multicluster search feature
     searchCollector:
-      enabled: true
-
-    # Configure multicluster GRC policy feature
-    policyController:
       enabled: true
 
     # Configure multicluster service registry feature
@@ -52,22 +43,16 @@ data:
       dnsSuffix: "mcm.svc"
       plugins: "kube-service"
 
-    # Configure the CertificatePolicy controller feature
-    certPolicyController:
-      enabled: true
-
     # Configure the CisPolicy controller feature
     cisController:
       enabled: false
+
+    # Configure the CertificatePolicy controller feature
+    certPolicyController:
+      enabled: true
 
     # Configure the IamPolicy controller feature
     iamPolicyController:
       enabled: true
 
-    ## Image Registry Configurations
-    imageRegistry: quay.io/open-cluster-management
-    # privateRegistryEnabled: false
-    # registryUsername:
-    # registryPassword:
-
-    version: '1.0.0'
+    version: "1.0.0"
