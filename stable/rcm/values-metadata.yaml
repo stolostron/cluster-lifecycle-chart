@@ -92,3 +92,21 @@ clusterController:
           type: "string"
           immutable: false
           required: false
+imageShaDigests:
+  __metadata:
+  name: "imageShaDigests"
+  label: "Image SHA Digests"
+  description: "Image SHA Digests"
+  hidden: true
+  rcm_controller:
+    __metadata:
+      name: "rcm_controller"
+      label: "rcm_controller"
+      description: "Image SHA of rcm-controller"
+      hidden: true
+  endpoint_operator:
+    __metadata:
+      name: "endpoint_operator"
+      label: "endpoint_operator"
+      description: "Image SHA of endpoint-operator"
+      hidden: true

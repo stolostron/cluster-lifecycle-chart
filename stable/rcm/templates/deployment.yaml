@@ -84,7 +84,11 @@ spec:
           effect: NoSchedule
       containers:
       - name: cluster-controller
+        {{- if .Values.imageShaDigests.rcm_controller }}
+        image: "{{ .Values.clusterController.image.repository}}/{{.Values.clusterController.image.name}}@{{ .Values.imageShaDigests.rcm_controller }}"
+        {{- else }}
         image: "{{ .Values.clusterController.image.repository}}/{{.Values.clusterController.image.name}}:{{ .Values.clusterController.image.tag }}{{ .Values.imageTagPostfix }}"
+        {{- end }}
         imagePullPolicy: {{ .Values.clusterController.image.pullPolicy }}
         resources:
 {{ toYaml .Values.clusterController.resources | indent 10 }}
@@ -102,6 +106,8 @@ spec:
             value: {{ .Values.imagePullSecret }}
           - name: DEFAULT_IMAGE_REGISTRY
             value: {{ .Values.imageRepository }}
+          - name: ENDPOINT_OPERATOR_SHA
+            value: {{ .Values.imageShaDigests.endpoint_operator }}
           - name: POD_NAMESPACE
             valueFrom:
               fieldRef:
