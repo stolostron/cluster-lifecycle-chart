@@ -29,8 +29,6 @@ clusterController:
     limits:
       memory: "256Mi"
       cpu: "500m"
-  import:
-    name: "cluster-import-config"
 
 imageShaDigests: 
   rcm_controller: ""
