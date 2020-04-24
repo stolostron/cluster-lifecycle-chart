@@ -40,14 +40,14 @@ spec:
         app.kubernetes.io/name: {{ .Values.clusterController.name }}
         helm.sh/chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
       annotations:
-        productName: "IBM Multi-Cloud Manager"
+        productName: "Advanced Cluster Management"
         productID: "product-id"
         productVersion: 1.0.0
         scheduler.alpha.kubernetes.io/critical-pod: ''
     spec:
-    {{- if .Values.clusterController.image.pullSecret }}
+    {{- if .Values.global.imagePullSecret }}
       imagePullSecrets:
-        - name: {{ .Values.clusterController.image.pullSecret }}
+        - name: {{ .Values.global.imagePullSecret }}
     {{- end }}
       serviceAccountName: {{ .Values.clusterController.name }}
       hostNetwork: false
@@ -84,12 +84,8 @@ spec:
           effect: NoSchedule
       containers:
       - name: cluster-controller
-        {{- if .Values.imageShaDigests.rcm_controller }}
-        image: "{{ .Values.clusterController.image.repository}}/{{.Values.clusterController.image.name}}@{{ .Values.imageShaDigests.rcm_controller }}"
-        {{- else }}
-        image: "{{ .Values.clusterController.image.repository}}/{{.Values.clusterController.image.name}}:{{ .Values.clusterController.image.tag }}{{ .Values.imageTagPostfix }}"
-        {{- end }}
-        imagePullPolicy: {{ .Values.clusterController.image.pullPolicy }}
+        image: "{{ .Values.global.imageOverrides.rcm_controller }}"
+        imagePullPolicy: {{ .Values.global.imagePullPolicy }}
         resources:
 {{ toYaml .Values.clusterController.resources | indent 10 }}
         env:
@@ -101,13 +97,13 @@ spec:
           - name: OPERATOR_NAME
             value: {{ .Values.clusterController.name }}
           - name: IMAGE_TAG_POSTFIX
-            value: {{ .Values.imageTagPostfix }}
+            value: {{ .Values.global.imageTagPostfix }}
           - name: DEFAULT_IMAGE_PULL_SECRET
-            value: {{ .Values.imagePullSecret }}
+            value: {{ .Values.global.imagePullSecret }}
           - name: DEFAULT_IMAGE_REGISTRY
-            value: {{ .Values.imageRepository }}
-          - name: ENDPOINT_OPERATOR_SHA
-            value: {{ .Values.imageShaDigests.endpoint_operator }}
+            value: {{ .Values.global.imageRepository }}
+          - name: ENDPOINT_OPERATOR_IMAGE
+            value: {{ .Values.global.imageOverrides.endpoint_operator }}
           - name: POD_NAMESPACE
             valueFrom:
               fieldRef:
