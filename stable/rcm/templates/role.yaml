@@ -20,7 +20,7 @@ rules:
   - pods
   - services
   - services/finalizers
-  - endpoints
+  - klusterlets
   - persistentvolumeclaims
   - events
   - configmaps
@@ -66,7 +66,7 @@ rules:
   verbs:
   - get
 - apiGroups:
-  - multicloud.open-cluster-management.io
+  - agent.open-cluster-management.io
   resources:
   - '*'
   verbs:
