@@ -24,43 +24,21 @@ arch:
       - label: "s390x"
         value: "s390x"
 
-
 clusterController:
-  image:
-    repository:
-      __metadata:
-        label: "Cluster lifecycle controller api Image Repository"
-        description: "Image Repository for Cluster lifecycle controller"
-        type: "string"
-        immutable: false
-        required: false
-    name:
-      __metadata:
-        label: "Cluster lifecycle controller Image name"
-        description: "Image for Cluster lifecycle controller"
-        type: "string"
-        immutable: false
-        required: false
-    tag:
-      __metadata:
-        label: "Cluster lifecycle controller Image Tag"
-        description: "Tag of Cluster lifecycle controller Image"
-        type: "string"
-        immutable: false
-        required: false
-    pullPolicy:
-      __metadata:
-        label: "Cluster lifecycle controller Image Pull Policy"
-        description:  "Image Pull Policy for Cluster lifecycle controller"
-        type: "string"
-        required: false
-        options:
-        - label: "IfNotPresent"
-          value: "IfNotPresent"
-        - label: "Always"
-          value: "Always"
-        - label: "Never"
-          value: "Never"
+  name:
+    __metadata:
+      label: "Cluster lifecycle container name"
+      description: "Container name for Cluster lifecycle controller"
+      type: "string"
+      immutable: false
+      required: false
+  replicaCount:
+    __metadata:
+      label: "Cluster lifecycle pod replica count"
+      description: "replica count for Cluster lifecycle controller pod"
+      type: "number"
+      immutable: false
+      required: false
   resources:
     requests:
       memory:
@@ -92,3 +70,68 @@ clusterController:
           type: "string"
           immutable: false
           required: false
+  import:
+    name:
+      __metadata:
+      label: "Cluster controller configmap name"
+      description: "Configmap name for Cluster controller"
+      type: "string"
+      immutable: false
+      required: false
+
+global:
+  imagePullPolicy:
+    __metadata:
+      label: "Cluster lifecycle controller Image Pull Policy"
+      description:  "Image Pull Policy for Cluster lifecycle controller"
+      type: "string"
+      required: false
+      options:
+      - label: "IfNotPresent"
+        value: "IfNotPresent"
+      - label: "Always"
+        value: "Always"
+      - label: "Never"
+        value: "Never"
+  imagePullSecret:
+    __metadata:
+      label: "Cluster lifecycle controller api Image PullSecret"
+      description: "Image PullSecret Repository for Cluster lifecycle controller"
+      type: "string"
+      immutable: false
+      required: false
+  imageRepository:
+    __metadata:
+      label: "Cluster lifecycle controller api Image Repository"
+      description: "Image Repository for Cluster lifecycle controller"
+      type: "string"
+      immutable: false
+      required: false
+  imageTagPostfix:
+    __metadata:
+      label: "Cluster lifecycle controller api Image Tag Postfix"
+      description: "Image Tag Postfix for Cluster lifecycle controller"
+      type: "string"
+      immutable: false
+      required: false
+  imageOverrides:
+    __metadata:
+    name: "imageOverrides"
+    label: "Image Overrides"
+    description: "Image Overrides"
+    rcm_controller:
+      __metadata:
+        name: "rcm_controller"
+        label: "rcm_controller"
+        description: "Image override for rcm-controller"
+        type: "string"
+        immutable: false
+        required: false
+    endpoint_operator:
+      __metadata:
+        name: "endpoint_operator"
+        label: "endpoint_operator"
+        description: "Image override for endpoint-operator"
+        type: "string"
+        immutable: false
+        required: false
