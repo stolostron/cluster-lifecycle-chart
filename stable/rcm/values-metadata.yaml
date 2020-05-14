@@ -127,11 +127,11 @@ global:
         type: "string"
         immutable: false
         required: false
-    endpoint_operator:
+    klusterlet_operator:
       __metadata:
-        name: "endpoint_operator"
-        label: "endpoint_operator"
-        description: "Image override for endpoint-operator"
+        name: "klusterlet_operator"
+        label: "klusterlet_operator"
+        description: "Image override for klusterlet-operator"
         type: "string"
         immutable: false
         required: false

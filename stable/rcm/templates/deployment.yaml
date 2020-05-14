@@ -102,7 +102,7 @@ spec:
             value: {{ .Values.global.imagePullSecret }}
           - name: DEFAULT_IMAGE_REGISTRY
             value: {{ .Values.global.imageRepository }}
-          - name: ENDPOINT_OPERATOR_IMAGE
+          - name: KLUSTERLET_OPERATOR_IMAGE
             value: {{ .Values.global.imageOverrides.endpoint_operator }}
           - name: POD_NAMESPACE
             valueFrom:
