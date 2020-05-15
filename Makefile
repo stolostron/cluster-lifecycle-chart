@@ -8,30 +8,21 @@ GITHUB_TOKEN   ?=
 
 SHELL := /bin/bash
 
--include $(shell curl -fso .build-harness -H "Authorization: token ${GITHUB_TOKEN}" -H "Accept: application/vnd.github.v3.raw" "https://raw.github.ibm.com/ICP-DevOps/build-harness/master/templates/Makefile.build-harness"; echo .build-harness)
+# GITHUB_USER containing '@' char must be escaped with '%40'
+GITHUB_USER := $(shell echo $(GITHUB_USER) | sed 's/@/%40/g')
+GITHUB_TOKEN ?=
+
+# Bootstrap (pull) the build harness
+ifdef GITHUB_TOKEN
+-include $(shell curl -H 'Authorization: token ${GITHUB_TOKEN}' -H 'Accept: application/vnd.github.v4.raw' -L https://api.github.com/repos/open-cluster-management/build-harness-extensions/contents/templates/Makefile.build-harness-bootstrap -o .build-harness-bootstrap; echo .build-harness-bootstrap)
+endif
 
 VERSION ?= ${SEMVERSION}
 CHART_FILE ?= $(CHART_NAME)-$(VERSION).tgz
 
-.PHONY: build lint setup build archive copyright-check
-
-default: build
-
-.PHONY: init\:
-init::
-	@mkdir -p variables
-ifndef GITHUB_USER
-	$(info GITHUB_USER not defined)
-	exit -1
-endif
-	$(info Using GITHUB_USER=$(GITHUB_USER))
-ifndef GITHUB_TOKEN
-	$(info GITHUB_TOKEN not defined)
-	exit -1
-endif
+.PHONY: build lint setup
 
 CHART_VERSION := $(SEMVERSION)
-CHART_NAME ?= kui-web-terminal
 
 
 setup:

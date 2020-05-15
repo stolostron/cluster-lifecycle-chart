@@ -1,16 +1,4 @@
-dist: xenial
-sudo: required
-group: bluezone
-language: generic
-
-# Environment variables (setup endpoint to github)
-env:
-  global:
-  - OCTOKIT_API_ENDPOINT="https://github.ibm.com/api/v3/"
-  - BRANCH=$(if [ "$TRAVIS_PULL_REQUEST" == "false" ]; then echo $TRAVIS_BRANCH; else echo $TRAVIS_PULL_REQUEST_BRANCH; fi)
-
-services:
-  docker
+language: minimal
 
 # Only build on master, stable branches and tag
 # The stable branch and tag should be leading with numbers
@@ -21,24 +9,25 @@ branches:
     - /^v[0-9]+\..*$/
     - /^release-[0-9]+\..*$/
 
+stages:
+  - build
+  - release-ff
 
-before_script:
-  - git config --global url."git@github.ibm.com:".insteadOf "https://github.ibm.com"
-  - make init
-  - make tool
-  - make lint
+jobs:
+  include:
+    - stage: build
+      name: "Build the Helm chart"
+      before_script:
+        - git config --global url."git@github.com:".insteadOf "https://github.com"
+        - make
+        - make tool
+        - make lint
+      script:
+        - make build
+    - stage: release-ff
+      name: "Push commits to current release branch"
+      if: type = push AND branch =~ /^master$/
+      script:
+        - make
+        - make release-ff
 
-script:
-  - make build
-
-
-after_success:
-  - test "$TRAVIS_EVENT_TYPE" != "pull_request" || echo "success"
-  - |
-      if [[ "$TRAVIS_EVENT_TYPE" != "pull_request" ]]; then
-        python build-leader.py
-        export $(cat .to_export_back)
-        if [[ "$BUILD_LEADER" == "YES" ]]; then
-          make release-chart
-        fi
-      fi
