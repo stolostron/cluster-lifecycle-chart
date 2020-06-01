@@ -42,7 +42,7 @@ spec:
       annotations:
         productName: "Advanced Cluster Management"
         productID: "product-id"
-        productVersion: 1.0.0
+        productVersion: 2.0.0
         scheduler.alpha.kubernetes.io/critical-pod: ''
     spec:
     {{- if .Values.global.imagePullSecret }}
