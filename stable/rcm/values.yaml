@@ -62,5 +62,5 @@ global:
   imageRepository: "quay.io/open-cluster-management"
   imageTagPostfix: ""
   imageOverrides: 
-    rcm_controller: "quay.io/open-cluster-management/rcm-controller:1.0.0"
-    klusterlet_operator: "quay.io/open-cluster-management/klusterlet-operator:1.0.0"
+    rcm_controller: "quay.io/open-cluster-management/rcm-controller:2.0.0"
+    klusterlet_operator: "quay.io/open-cluster-management/klusterlet-operator:2.0.0"
