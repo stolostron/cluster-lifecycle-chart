@@ -19,7 +19,6 @@ jobs:
       name: "Build the Helm chart"
       before_script:
         - git config --global url."git@github.com:".insteadOf "https://github.com"
-        - make
         - make tool
         - make lint
       script:

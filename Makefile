@@ -20,15 +20,11 @@ endif
 VERSION ?= ${SEMVERSION}
 CHART_FILE ?= $(CHART_NAME)-$(VERSION).tgz
 
-.PHONY: build lint setup
+.PHONY: build lint 
 
 CHART_VERSION := $(SEMVERSION)
 
-
-setup:
-	helm init -c
-
-lint: setup
+lint:
 	helm lint $(STABLE_CHART)
 
 .PHONY: build
@@ -52,4 +48,4 @@ release-chart:
 .PHONY: tool
 ## Download helm for linting and packaging
 tool:
-	curl -fksSL https://storage.googleapis.com/kubernetes-helm/helm-v2.12.3-linux-amd64.tar.gz | sudo tar --strip-components=1 -xvz -C /usr/local/bin/ linux-amd64/helm
+	curl https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3 | bash
