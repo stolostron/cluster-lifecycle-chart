@@ -65,7 +65,7 @@ spec:
           operator: Exists
           effect: NoSchedule
       containers:
-      - name: cluster-controller
+      - name: managedcluster-import-controller
         image: "{{ .Values.global.imageOverrides.rcm_controller }}"
         imagePullPolicy: {{ .Values.global.imagePullPolicy }}
         resources:
@@ -85,7 +85,7 @@ spec:
           - name: DEFAULT_IMAGE_REGISTRY
             value: {{ .Values.global.imageRepository }}
           - name: KLUSTERLET_OPERATOR_IMAGE
-            value: {{ .Values.global.imageOverrides.endpoint_operator }}
+            value: {{ .Values.global.imageOverrides.registration_operator }}
           - name: POD_NAMESPACE
             valueFrom:
               fieldRef:
