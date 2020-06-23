@@ -230,4 +230,7 @@ rules:
   verbs: ["*"]
 - apiGroups: ["mcm.ibm.com"]
   resources: ["*"]
-  verbs: ["*"] 
+  verbs: ["*"]
+- apiGroups: ["proxy.open-cluster-management.io"]
+  resources: ["*"]
+  verbs: ["*"]
