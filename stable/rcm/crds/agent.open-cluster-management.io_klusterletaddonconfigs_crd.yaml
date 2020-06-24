@@ -51,9 +51,9 @@ spec:
               required:
               - enabled
               type: object
-            cisController:
-              description: KlusterletAddonConfigCISControllerSpec defines configuration
-                for the CISController component
+            cisPolicyController:
+              description: KlusterletAddonConfigCISPolicyControllerSpec defines configuration
+                for the CISPolicyController component
               properties:
                 enabled:
                   type: boolean
@@ -121,7 +121,7 @@ spec:
           required:
           - applicationManager
           - certPolicyController
-          - cisController
+          - cisPolicyController
           - clusterLabels
           - clusterName
           - clusterNamespace
