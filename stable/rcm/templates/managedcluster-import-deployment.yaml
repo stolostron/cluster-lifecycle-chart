@@ -21,7 +21,7 @@ metadata:
     helm.sh/chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
 spec:
   minReadySeconds: 0
-  replicas: {{ .Values.clusterController.replicaCount }}
+  replicas: {{ .Values.hubconfig.replicaCount }}
   selector:
     matchLabels:
       app: {{ .Values.clusterController.name }}

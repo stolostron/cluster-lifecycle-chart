@@ -12,7 +12,6 @@ arch:
 
 clusterController:
   name: managedcluster-import-controller
-  replicaCount: 1
   resources:
     requests:
       memory: "96Mi"
@@ -23,6 +22,7 @@ clusterController:
 
 hubconfig:
   nodeSelector: null
+  replicaCount: 1
 
 affinity:
   nodeAffinity:
@@ -58,7 +58,6 @@ affinity:
 
 klusterletAddonController:
   name: klusterlet-addon-controller
-  replicaCount: 1
   resources:
     requests:
       memory: "96Mi"

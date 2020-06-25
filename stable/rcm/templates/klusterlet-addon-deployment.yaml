@@ -16,7 +16,7 @@ metadata:
     helm.sh/chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
 spec:
   minReadySeconds: 0
-  replicas: {{ .Values.klusterletAddonController.replicaCount }}
+  replicas: {{ .Values.hubconfig.replicaCount }}
   selector:
     matchLabels:
       app: {{ .Values.klusterletAddonController.name }}
