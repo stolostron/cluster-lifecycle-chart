@@ -3,7 +3,7 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
   creationTimestamp: null
-  name: {{ .Values.klusterletAddonController.name }}
+  name: {{ .Values.org }}:{{ .Chart.Name }}:{{ .Values.klusterletAddonController.name }}
   labels:
     app: {{ .Values.klusterletAddonController.name }}
     chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"

@@ -5,6 +5,8 @@
 ###############################################################################
 # Copyright (c) 2020 Red Hat, Inc
 
+org: open-cluster-management
+
 arch:
   - amd64
   - ppc64le
