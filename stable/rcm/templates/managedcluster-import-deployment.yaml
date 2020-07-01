@@ -84,8 +84,12 @@ spec:
             value: {{ .Values.global.imagePullSecret }}
           - name: DEFAULT_IMAGE_REGISTRY
             value: {{ .Values.global.imageRepository }}
-          - name: KLUSTERLET_OPERATOR_IMAGE
+          - name: REGISTRATION_OPERATOR_IMAGE
             value: {{ .Values.global.imageOverrides.registration_operator }}
+          - name: REGISTRATION_IMAGE
+            value: {{ .Values.global.imageOverrides.registration }}
+          - name: WORK_IMAGE
+            value: {{ .Values.global.imageOverrides.work }}
           - name: POD_NAMESPACE
             valueFrom:
               fieldRef:
