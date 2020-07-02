@@ -18,31 +18,10 @@ rules:
 - apiGroups:
   - ""
   resources:
-  - pods
-  - services
-  - services/finalizers
-  - klusterlets
-  - persistentvolumeclaims
   - events
-  - configmaps
   - secrets
+  - configmaps
   - serviceaccounts
-  - namespaces
-  verbs:
-  - create
-  - delete
-  - get
-  - list
-  - patch
-  - update
-  - watch
-- apiGroups:
-  - apps
-  resources:
-  - deployments
-  - daemonsets
-  - replicasets
-  - statefulsets
   verbs:
   - create
   - delete
@@ -82,7 +61,8 @@ rules:
 - apiGroups:
   - agent.open-cluster-management.io
   resources:
-  - '*'
+  - klusterletaddonconfigs
+  - klusterletaddonconfigs/finalizers
   verbs:
   - create
   - delete
@@ -98,7 +78,6 @@ rules:
   - managedclusters/finalizers
   verbs:
   - create
-  - delete
   - get
   - list
   - patch
@@ -135,12 +114,8 @@ rules:
   resources:
   - infrastructures
   verbs:
-  - create
-  - delete
   - get
   - list
-  - patch
-  - update
   - watch
 # appmgr
 - apiGroups:

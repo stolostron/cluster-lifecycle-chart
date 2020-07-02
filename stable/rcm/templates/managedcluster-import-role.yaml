@@ -17,26 +17,29 @@ rules:
 - apiGroups:
   - ""
   resources:
-  - pods
   - services
   - services/finalizers
-  - persistentvolumeclaims
   - events
   - configmaps
   - secrets
   - serviceaccounts
   - namespaces
   verbs:
-  - '*'
+  - list
+  - create
+  - update
+  - get
+  - watch
+  - patch
+  - delete
 - apiGroups:
-  - apps
+  - ""
   resources:
-  - deployments
-  - daemonsets
-  - replicasets
-  - statefulsets
+  - pods
   verbs:
-  - '*'
+  - get
+  - list
+  - watch
 - apiGroups:
   - monitoring.coreos.com
   resources:
@@ -47,23 +50,11 @@ rules:
 - apiGroups:
   - apps
   resourceNames:
-  - rcm-controller
+  - {{ .Values.clusterController.name }}
   resources:
   - deployments/finalizers
   verbs:
   - update
-- apiGroups:
-  - ""
-  resources:
-  - pods
-  verbs:
-  - get
-- apiGroups:
-  - apps
-  resources:
-  - replicasets
-  verbs:
-  - get
 - apiGroups:
   - config.openshift.io
   resources:
@@ -75,9 +66,17 @@ rules:
 - apiGroups:
   - hive.openshift.io
   resources:
-  - '*'
+  - clusterdeployments
+  - syncsets
+  - selectorsyncsets
   verbs:
-  - '*'
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
 - apiGroups:
   - cluster.open-cluster-management.io
   resources:
