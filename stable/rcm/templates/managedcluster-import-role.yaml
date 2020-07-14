@@ -131,3 +131,9 @@ rules:
   - certificatesigningrequests/approval
   verbs:
   - update
+- apiGroups:
+  - certificates.k8s.io
+  resources:
+  - signers
+  verbs:
+  - approve
