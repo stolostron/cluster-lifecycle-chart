@@ -98,6 +98,11 @@ klusterletAddonControllerAffinity:
             values:
             - klusterlet-addon-controller
 
+klusterletAddonWebhook:
+  name: klusterlet-addon-webhook
+  secretName: klusterlet-addon-webhook-tls
+  certName: klusterlet-addon-webhook-cert
+
 global: 
   useShaManifest: true
   imagePullPolicy: Always 
