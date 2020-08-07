@@ -11,7 +11,7 @@ name: rcm
 appVersion: "2.1"
 version: 2.1.0
 tillerVersion: ">=2.12.3"
-kubeVersion: ">=1.11.0"
+kubeVersion: ">=1.11.0-0"
 keywords:
   - IcpClusterResource
   - Commercial
