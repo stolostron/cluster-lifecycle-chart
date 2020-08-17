@@ -137,3 +137,11 @@ rules:
   - signers
   verbs:
   - approve
+- apiGroups:
+  - config.openshift.io
+  resources:
+  - apiservers
+  verbs:
+  - get
+  - list
+  - watch

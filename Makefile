@@ -48,4 +48,5 @@ release-chart:
 .PHONY: tool
 ## Download helm for linting and packaging
 tool:
-	curl https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3 | bash
+	#curl https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3 | bash
+	curl -fksSL https://get.helm.sh/helm-v3.2.4-linux-amd64.tar.gz | sudo tar --strip-components=1 -xvz -C /usr/local/bin/ linux-amd64/helm
