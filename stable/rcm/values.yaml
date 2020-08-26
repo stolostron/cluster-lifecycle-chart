@@ -105,7 +105,7 @@ klusterletAddonWebhook:
 
 global: 
   useShaManifest: true
-  imagePullPolicy: Always 
+  imagePullPolicy: IfNotPresent 
   imagePullSecret: null
   imageRepository: "quay.io/open-cluster-management"
   imageTagPostfix: ""
