@@ -1,5 +1,5 @@
 CHART_NAME ?= rcm
-STABLE_CHART ?= stable/$(CHART_NAME)
+STABLE_CHART ?= $(CHART_NAME)
 ARTIFACTORY_URL ?= https://na.artifactory.swg-devops.com/artifactory
 ARTIFACTORY_REPO ?= hyc-cloud-private-integration-helm-local
 STABLE_BUILD_DIR = repo/stable

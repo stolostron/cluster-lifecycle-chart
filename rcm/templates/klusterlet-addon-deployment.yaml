@@ -85,13 +85,6 @@ spec:
             valueFrom:
               fieldRef:
                 fieldPath: metadata.namespace
-        volumeMounts:
-          - name: certs
-            mountPath: /tmp/webhookcert
-      volumes:
-      - name: certs
-        secret:
-          secretName: {{ .Values.klusterletAddonWebhook.secretName }}
       {{- with .Values.hubconfig.nodeSelector }}
       nodeSelector:
       {{ toYaml . | indent 8 }}
