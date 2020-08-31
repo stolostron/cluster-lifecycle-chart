@@ -7,7 +7,7 @@ To push that chart into an environment for test run:
 ```
 oc annotate mch multiclusterhub mch-pause=true -n open-cluster-management
 oc delete appsub rcm-sub  -n open-cluster-management
-helm install rcm rcm -f values.yaml -n open-cluster-management
+helm install rcm stable/rcm -f values.yaml -n open-cluster-management
 ```
 
 once you finished your test run again
