@@ -1,0 +1,8 @@
+kind: ClusterRole
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: {{ .Values.org }}:{{ .Release.Name }}:clustermanagementaddons-readonly
+rules:
+- apiGroups: ["addon.open-cluster-management.io"]
+  resources: ["clustermanagementaddons"]
+  verbs: ["get", "list", "watch"]
