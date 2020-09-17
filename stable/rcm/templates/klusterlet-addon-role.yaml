@@ -241,3 +241,11 @@ rules:
   - patch
   - update
   - watch
+- apiGroups:
+  - config.openshift.io
+  resources:
+  - apiservers
+  verbs:
+  - get
+  - list
+  - watch
