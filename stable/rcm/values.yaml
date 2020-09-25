@@ -41,7 +41,7 @@ affinity:
     preferredDuringSchedulingIgnoredDuringExecution:
     - weight: 70
       podAffinityTerm:
-        topologyKey: failure-domain.beta.kubernetes.io/zone
+        topologyKey: topology.kubernetes.io/zone
         labelSelector:
           matchExpressions:
           - key: app
@@ -81,7 +81,7 @@ klusterletAddonControllerAffinity:
     preferredDuringSchedulingIgnoredDuringExecution:
     - weight: 70
       podAffinityTerm:
-        topologyKey: failure-domain.beta.kubernetes.io/zone
+        topologyKey: topology.kubernetes.io/zone
         labelSelector:
           matchExpressions:
           - key: app
