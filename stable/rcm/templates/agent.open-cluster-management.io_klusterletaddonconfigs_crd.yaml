@@ -107,7 +107,6 @@ spec:
               - enabled
               type: object
             version:
-              minLength: 1
               type: string
           required:
           - applicationManager
@@ -118,7 +117,6 @@ spec:
           - iamPolicyController
           - policyController
           - searchCollector
-          - version
           type: object
         status:
           description: KlusterletAddonConfigStatus defines the observed state of KlusterletAddonConfig
