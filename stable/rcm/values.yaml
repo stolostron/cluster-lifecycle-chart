@@ -24,7 +24,7 @@ clusterController:
 
 hubconfig:
   nodeSelector: null
-  replicaCount: 1
+  replicaCount: 2
 
 affinity:
   nodeAffinity:
@@ -103,6 +103,16 @@ klusterletAddonWebhook:
   secretName: klusterlet-addon-webhook-tls
   certName: klusterlet-addon-webhook-cert
 
+clusterlifecycleStateMetrics:
+  name: clusterlifecycle-state-metrics
+  resources:
+    requests:
+      memory: "32Mi"
+      cpu: "25m"
+    limits:
+      memory: "256Mi"
+      cpu: "500m"
+
 global: 
   useShaManifest: true
   imagePullPolicy: IfNotPresent 
@@ -115,3 +125,4 @@ global:
     registration: "quay.io/open-cluster-management/registration:0.0.1"
     work: "quay.io/open-cluster-management/work:0.0.1"
     endpoint_operator: "quay.io/open-cluster-management/endpoint-operator:2.1.0"
+    clusterlifecycle_state_metrics: "quay.io/open-cluster-management/clusterlifecycle-state-metrics:2.2.0"

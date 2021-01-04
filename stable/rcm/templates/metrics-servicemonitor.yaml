@@ -1,0 +1,31 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: {{ .Values.clusterlifecycleStateMetrics.name }}
+  namespace: openshift-monitoring
+  labels:
+    app: {{ .Values.clusterlifecycleStateMetrics.name }}
+    chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
+    component: {{ .Values.clusterlifecycleStateMetrics.name }}
+    heritage: {{ .Release.Service }}
+    release: {{ .Release.Name }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+    app.kubernetes.io/name: {{ .Values.clusterlifecycleStateMetrics.name }}
+    helm.sh/chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
+spec:
+  endpoints:
+  - interval: 60s
+    port: https
+    scheme: https
+    scrapeTimeout: 10s
+    bearerTokenFile: /var/run/secrets/kubernetes.io/serviceaccount/token
+    tlsConfig:
+      insecureSkipVerify: true
+  jobLabel: clc-app
+  selector:
+    matchLabels:
+      clc-app: {{ .Values.clusterlifecycleStateMetrics.name }}
+  namespaceSelector:
+    matchNames:
+      - {{ .Release.Namespace }}
