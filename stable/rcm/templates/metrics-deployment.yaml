@@ -1,0 +1,71 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: {{ .Values.clusterlifecycleStateMetrics.name }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app: {{ .Values.clusterlifecycleStateMetrics.name }}
+    chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
+    component: {{ .Values.clusterlifecycleStateMetrics.name }}
+    heritage: {{ .Release.Service }}
+    release: {{ .Release.Name }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+    app.kubernetes.io/name: {{ .Values.clusterlifecycleStateMetrics.name }}
+    helm.sh/chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: {{ .Values.clusterlifecycleStateMetrics.name }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.clusterlifecycleStateMetrics.name }}
+        chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
+        component: {{ .Values.clusterlifecycleStateMetrics.name }}
+        heritage: {{ .Release.Service }}
+        release: {{ .Release.Name }}
+        app.kubernetes.io/instance: {{ .Release.Name }}
+        app.kubernetes.io/managed-by: {{ .Release.Service }}
+        app.kubernetes.io/name: {{ .Values.clusterlifecycleStateMetrics.name }}
+        helm.sh/chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
+    spec:
+    {{- if .Values.global.imagePullSecret }}
+      imagePullSecrets:
+        - name: {{ .Values.global.imagePullSecret }}
+    {{- end }}
+      serviceAccountName: {{ .Values.clusterlifecycleStateMetrics.name }}
+      containers:
+      - name: {{ .Values.clusterlifecycleStateMetrics.name }}
+        image: "{{ .Values.global.imageOverrides.clusterlifecycle_state_metrics }}"
+        imagePullPolicy: IfNotPresent
+        resources:
+{{ toYaml .Values.clusterlifecycleStateMetrics.resources | indent 10 }}
+        args:
+          - "--http-port=8080"
+          - "--http-telemetry-port=8081"
+          - "--https-port=8443"
+          - "--https-telemetry-port=8444"
+          - "--tls-crt-file=/var/run/clusterlifecycle-state-metrics/tls.crt"
+          - "--tls-key-file=/var/run/clusterlifecycle-state-metrics/tls.key"
+        readinessProbe:
+          httpGet:
+            path: /healthz
+            port: 8080
+          initialDelaySeconds: 15
+          periodSeconds: 5
+        livenessProbe:
+          httpGet:
+            path: /healthz
+            port: 8080
+          initialDelaySeconds: 15
+          periodSeconds: 5
+        volumeMounts:
+          - mountPath: "/var/run/clusterlifecycle-state-metrics"
+            name: certs
+            readOnly: true
+      volumes:
+      - name: certs
+        secret:
+          secretName: {{ .Values.clusterlifecycleStateMetrics.name }}-certs
