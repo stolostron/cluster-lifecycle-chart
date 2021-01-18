@@ -31,6 +31,7 @@ spec:
     metadata:
       labels:
         app: {{ .Values.clusterController.name }}
+        ocm-antiaffinity-selector: "managedclusterimport"
         component: {{ .Values.clusterController.name }}
         release: {{ .Release.Name }}
         chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"

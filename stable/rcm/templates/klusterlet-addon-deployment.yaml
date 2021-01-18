@@ -26,6 +26,7 @@ spec:
     metadata:
       labels:
         app: {{ .Values.klusterletAddonController.name }}
+        ocm-antiaffinity-selector: "klusterletaddon"
         component: {{ .Values.klusterletAddonController.name }}
         release: {{ .Release.Name }}
         chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
