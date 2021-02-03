@@ -65,6 +65,9 @@ spec:
         - key: dedicated
           operator: Exists
           effect: NoSchedule
+        - effect: NoSchedule 
+          key: node-role.kubernetes.io/infra 
+          operator: Exists
       containers:
       - name: managedcluster-import-controller
         image: "{{ .Values.global.imageOverrides.rcm_controller }}"

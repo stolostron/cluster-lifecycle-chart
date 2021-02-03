@@ -36,6 +36,10 @@ spec:
         - name: {{ .Values.global.imagePullSecret }}
     {{- end }}
       serviceAccountName: {{ .Values.clusterlifecycleStateMetrics.name }}
+      tolerations:
+      - effect: NoSchedule 
+        key: node-role.kubernetes.io/infra 
+        operator: Exists
       containers:
       - name: {{ .Values.clusterlifecycleStateMetrics.name }}
         image: "{{ .Values.global.imageOverrides.clusterlifecycle_state_metrics }}"
@@ -69,3 +73,7 @@ spec:
       - name: certs
         secret:
           secretName: {{ .Values.clusterlifecycleStateMetrics.name }}-certs
+      {{- with .Values.hubconfig.nodeSelector }}
+      nodeSelector:
+      {{ toYaml . | indent 8 }}
+      {{- end }}
