@@ -1,44 +1,41 @@
-###############################################################################
-# Licensed Materials - Property of IBM
-# (C) Copyright IBM Corporation 2018, 2019 All Rights Reserved
-# US Government Users Restricted Rights - Use, duplication or disclosure restricted by GSA ADP Schedule Contract with IBM Corp.
-###############################################################################
+# Copyright (c) 2020 Red Hat, Inc.
+# Copyright Contributors to the Open Cluster Management project
 
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ .Values.clusterController.name }}
+  name: {{ .Values.klusterletAddonController.name }}
   namespace: {{ .Release.Namespace }}
   labels:
-    app: {{ .Values.clusterController.name }}
+    app: {{ .Values.klusterletAddonController.name }}
     chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
-    component: {{ .Values.clusterController.name }}
+    component: {{ .Values.klusterletAddonController.name }}
     heritage: {{ .Release.Service }}
     release: {{ .Release.Name }}
     app.kubernetes.io/instance: {{ .Release.Name }}
     app.kubernetes.io/managed-by: {{ .Release.Service }}
-    app.kubernetes.io/name: {{ .Values.clusterController.name }}
+    app.kubernetes.io/name: {{ .Values.klusterletAddonController.name }}
     helm.sh/chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
 spec:
   minReadySeconds: 0
   replicas: {{ .Values.hubconfig.replicaCount }}
   selector:
     matchLabels:
-      app: {{ .Values.clusterController.name }}
-      component: {{ .Values.clusterController.name }}
+      app: {{ .Values.klusterletAddonController.name }}
+      component: {{ .Values.klusterletAddonController.name }}
       release: {{ .Release.Name }}
   template:
     metadata:
       labels:
-        app: {{ .Values.clusterController.name }}
-        ocm-antiaffinity-selector: "managedclusterimport"
-        component: {{ .Values.clusterController.name }}
+        app: {{ .Values.klusterletAddonController.name }}
+        ocm-antiaffinity-selector: "klusterletaddon"
+        component: {{ .Values.klusterletAddonController.name }}
         release: {{ .Release.Name }}
         chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
         heritage: {{ .Release.Service }}
         app.kubernetes.io/instance: {{ .Release.Name }}
         app.kubernetes.io/managed-by: {{ .Release.Service }}
-        app.kubernetes.io/name: {{ .Values.clusterController.name }}
+        app.kubernetes.io/name: {{ .Values.klusterletAddonController.name }}
         helm.sh/chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
       annotations:
         productName: "Advanced Cluster Management"
@@ -50,14 +47,14 @@ spec:
       imagePullSecrets:
         - name: {{ .Values.global.imagePullSecret }}
     {{- end }}
-      serviceAccountName: {{ .Values.clusterController.name }}
+      serviceAccountName: {{ .Values.klusterletAddonController.name }}
       hostNetwork: false
       hostPID: false
       hostIPC: false
       terminationGracePeriodSeconds: 60
       securityContext:
         runAsNonRoot: true
-      {{- with .Values.affinity }}
+      {{- with .Values.klusterletAddonControllerAffinity }}
       affinity:
 {{ toYaml . | indent 8 }}
     {{- end }}
@@ -69,11 +66,11 @@ spec:
           key: node-role.kubernetes.io/infra 
           operator: Exists
       containers:
-      - name: managedcluster-import-controller
-        image: "{{ .Values.global.imageOverrides.rcm_controller }}"
+      - name: klusterlet-addon-controller
+        image: "{{ .Values.global.imageOverrides.endpoint_operator }}"
         imagePullPolicy: {{ .Values.global.imagePullPolicy }}
         resources:
-{{ toYaml .Values.clusterController.resources | indent 10 }}
+{{ toYaml .Values.klusterletAddonController.resources | indent 10 }}
         env:
           - name: WATCH_NAMESPACE
           - name: POD_NAME
@@ -81,19 +78,15 @@ spec:
               fieldRef:
                 fieldPath: metadata.name
           - name: OPERATOR_NAME
-            value: {{ .Values.clusterController.name }}
+            value: {{ .Values.klusterletAddonController.name }}
+          - name: USE_SHA_MANIFEST
+            value: "{{ .Values.global.useShaManifest }}"
           - name: IMAGE_TAG_POSTFIX
             value: {{ .Values.global.imageTagPostfix }}
           - name: DEFAULT_IMAGE_PULL_SECRET
             value: {{ .Values.global.imagePullSecret }}
           - name: DEFAULT_IMAGE_REGISTRY
             value: {{ .Values.global.imageRepository }}
-          - name: REGISTRATION_OPERATOR_IMAGE
-            value: {{ .Values.global.imageOverrides.registration_operator }}
-          - name: REGISTRATION_IMAGE
-            value: {{ .Values.global.imageOverrides.registration }}
-          - name: WORK_IMAGE
-            value: {{ .Values.global.imageOverrides.work }}
           - name: POD_NAMESPACE
             valueFrom:
               fieldRef:

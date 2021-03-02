@@ -1,10 +1,11 @@
-apiVersion: v1
-kind: Service
+# Copyright Contributors to the Open Cluster Management project
+
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
 metadata:
   name: {{ .Values.clusterlifecycleStateMetrics.name }}
-  namespace: {{ .Release.Namespace }}
+  namespace: openshift-monitoring
   labels:
-    clc-app: {{ .Values.clusterlifecycleStateMetrics.name }}
     app: {{ .Values.clusterlifecycleStateMetrics.name }}
     chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
     component: {{ .Values.clusterlifecycleStateMetrics.name }}
@@ -14,13 +15,19 @@ metadata:
     app.kubernetes.io/managed-by: {{ .Release.Service }}
     app.kubernetes.io/name: {{ .Values.clusterlifecycleStateMetrics.name }}
     helm.sh/chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
-  annotations:
-    service.beta.openshift.io/serving-cert-secret-name: {{ .Values.clusterlifecycleStateMetrics.name }}-certs
 spec:
-  type: ClusterIP
-  ports:
-  - name: https
-    port: 8443
-    targetPort: 8443
+  endpoints:
+  - interval: 60s
+    port: https
+    scheme: https
+    scrapeTimeout: 10s
+    bearerTokenFile: /var/run/secrets/kubernetes.io/serviceaccount/token
+    tlsConfig:
+      insecureSkipVerify: true
+  jobLabel: clc-app
   selector:
-    app: {{ .Values.clusterlifecycleStateMetrics.name }}
+    matchLabels:
+      clc-app: {{ .Values.clusterlifecycleStateMetrics.name }}
+  namespaceSelector:
+    matchNames:
+      - {{ .Release.Namespace }}
