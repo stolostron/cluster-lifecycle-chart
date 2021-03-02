@@ -1,4 +1,6 @@
-# rcm-chart
+[comment]: # ( Copyright Contributors to the Open Cluster Management project )
+
+# cluster-lifecycle-chart
 
 ## Testing
 
