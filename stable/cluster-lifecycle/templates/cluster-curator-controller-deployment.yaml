@@ -1,0 +1,37 @@
+#Copyright Contributors to the Open Cluster Management project.
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:  
+  name: {{ .Values.ClusterCuratorController.name }}
+  namespace: {{ .Release.Namespace }}
+spec:
+  replicas: {{ .Values.hubconfig.replicaCount }}
+  selector:
+    matchLabels:
+      name: {{ .Values.ClusterCuratorController.name }}
+  template:
+    metadata:
+      labels:
+        name: {{ .Values.ClusterCuratorController.name }}
+    spec:
+      {{- if .Values.global.imagePullSecret }}
+      imagePullSecrets:
+        - name: {{ .Values.global.imagePullSecret }}
+      {{- end }}
+      containers:
+      - command:
+        - ./cluster-curator-controller
+        - "-v"
+        - "2"
+        image: "{{ .Values.global.imageOverrides.cluster_curator_controller }}"
+        env:
+        - name: POD_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.name
+        imagePullPolicy: Always
+        name: {{ .Values.ClusterCuratorController.name }}
+        resources:
+{{ toYaml .Values.klusterletAddonController.resources | indent 10 }}
+      serviceAccountName: {{ .Values.ClusterCuratorController.shortName }}
