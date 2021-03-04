@@ -3,9 +3,9 @@
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
-  name: {{ .Values.org }}:{{ .Release.Name }}:clusterlifecycle-state-metrics-prometheus
+  name: {{ .Values.org }}:{{ .Release.Name }}:{{ .Values.clusterlifecycleStateMetrics.name }}-prometheus-v2
   labels:
-    app: {{ .Values.clusterlifecycleStateMetrics.name }}
+    app: {{ .Values.clusterlifecycleStateMetrics.name }}-v2
     chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
     component: {{ .Values.clusterlifecycleStateMetrics.name }}
     heritage: {{ .Release.Service }}
@@ -17,7 +17,7 @@ metadata:
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
-  name: {{ .Values.org }}:{{ .Release.Name }}:clusterlifecycle-state-metrics
+  name: {{ .Values.org }}:{{ .Release.Name }}:{{ .Values.clusterlifecycleStateMetrics.name }}-v2
 subjects:
   - kind: ServiceAccount
     name: prometheus-k8s
