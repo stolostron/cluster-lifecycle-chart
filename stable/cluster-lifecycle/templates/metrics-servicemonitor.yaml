@@ -3,10 +3,10 @@
 apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
 metadata:
-  name: {{ .Values.clusterlifecycleStateMetrics.name }}
+  name: {{ .Values.clusterlifecycleStateMetrics.name }}-v2
   namespace: openshift-monitoring
   labels:
-    app: {{ .Values.clusterlifecycleStateMetrics.name }}
+    app: {{ .Values.clusterlifecycleStateMetrics.name }}-v2
     chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
     component: {{ .Values.clusterlifecycleStateMetrics.name }}
     heritage: {{ .Release.Service }}
@@ -27,7 +27,7 @@ spec:
   jobLabel: clc-app
   selector:
     matchLabels:
-      clc-app: {{ .Values.clusterlifecycleStateMetrics.name }}
+      clc-app: {{ .Values.clusterlifecycleStateMetrics.name }}-v2
   namespaceSelector:
     matchNames:
       - {{ .Release.Namespace }}

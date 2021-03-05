@@ -5,9 +5,9 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
   creationTimestamp: null
-  name: {{ .Values.org }}:{{ .Release.Name }}:{{ .Values.klusterletAddonController.name }}
+  name: {{ .Values.org }}:{{ .Release.Name }}:{{ .Values.klusterletAddonController.name }}-v2
   labels:
-    app: {{ .Values.klusterletAddonController.name }}
+    app: {{ .Values.klusterletAddonController.name }}-v2
     chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
     component: {{ .Values.klusterletAddonController.name }}
     heritage: {{ .Release.Service }}
