@@ -55,16 +55,21 @@ spec:
           - "--https-telemetry-port=8444"
           - "--tls-crt-file=/var/run/clusterlifecycle-state-metrics/tls.crt"
           - "--tls-key-file=/var/run/clusterlifecycle-state-metrics/tls.key"
+        env:
+          - name: POD_NAME
+            valueFrom:
+              fieldRef:
+                fieldPath: metadata.name
         readinessProbe:
           httpGet:
             path: /healthz
-            port: 8080
+            port: 8081
           initialDelaySeconds: 15
           periodSeconds: 5
         livenessProbe:
           httpGet:
             path: /healthz
-            port: 8080
+            port: 8081
           initialDelaySeconds: 15
           periodSeconds: 5
         volumeMounts:

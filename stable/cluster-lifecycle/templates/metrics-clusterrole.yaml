@@ -15,6 +15,16 @@ metadata:
     app.kubernetes.io/name: {{ .Values.clusterlifecycleStateMetrics.name }}
     helm.sh/chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
 rules:
+# Allow hub to manage configmap for leader selection
+- apiGroups:
+  - ""
+  resources:
+  - configmaps
+  verbs:
+  - create
+  - update
+  - get
+  - delete
 # Allow hub to monitor and update status of csr
 - apiGroups: ["hive.openshift.io"]
   resources: ["clusterdeployments"]
