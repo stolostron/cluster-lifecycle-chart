@@ -1,1 +1,1 @@
-You have successfully installed cluster-life-cycle-chart {{ .Chart.Version }}
+You have successfully installed cluster-lifecycle-chart {{ .Chart.Version }}

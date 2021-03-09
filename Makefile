@@ -1,6 +1,6 @@
 # Copyright Contributors to the Open Cluster Management project
 
-CHART_NAME ?= cluster-life-cycle
+CHART_NAME ?= cluster-lifecycle
 STABLE_CHART ?= stable/$(CHART_NAME)
 
 SHELL := /bin/bash

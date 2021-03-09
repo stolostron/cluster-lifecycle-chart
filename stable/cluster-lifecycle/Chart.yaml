@@ -12,7 +12,6 @@ description: A helm chart for deploying the cluster lifecycle
 name: cluster-lifecycle
 appVersion: "2.3"
 version: 2.3.0
-tillerVersion: ">=2.12.3"
 kubeVersion: ">=1.11.0-0"
 keywords:
   - IcpClusterResource
