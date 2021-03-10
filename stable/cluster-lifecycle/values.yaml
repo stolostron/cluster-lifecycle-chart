@@ -69,6 +69,19 @@ klusterletAddonController:
     limits:
       memory: "256Mi"
       cpu: "500m"
+  addons:
+    appmgr:
+      name: application-manager
+    certpolicyctrl:
+      name: cert-policy-controller
+    iampolicyctrl:
+      name: iam-policy-controller
+    policyctrl:
+      name: policy-controller
+    search:
+      name: search-collector
+    workmgr:
+      name: work-manager
 
 klusterletAddonControllerAffinity:
   nodeAffinity:
