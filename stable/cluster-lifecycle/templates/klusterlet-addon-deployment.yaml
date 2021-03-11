@@ -87,18 +87,20 @@ spec:
             value: {{ .Values.global.imagePullSecret }}
           - name: DEFAULT_IMAGE_REGISTRY
             value: {{ .Values.global.imageRepository }}
-          - name: APPMGR_CLUSTERROLE_NAME
-            value: {{ .Values.org }}:{{ .Release.Name }}:addons:{{ .Values.klusterletAddonController.addons.appmgr.name }}
-          - name: CERTPOLICYCTRL_CLUSTERROLE_NAME
-            value: {{ .Values.org }}:{{ .Release.Name }}:addons:{{ .Values.klusterletAddonController.addons.certpolicyctrl.name }}
-          - name: IAMPOLICYCTRL_CLUSTERROLE_NAME
-            value: {{ .Values.org }}:{{ .Release.Name }}:addons:{{ .Values.klusterletAddonController.addons.iampolicyctrl.name }}
-          - name: POLICYCTRL_CLUSTERROLE_NAME
-            value: {{ .Values.org }}:{{ .Release.Name }}:addons:{{ .Values.klusterletAddonController.addons.policyctrl.name }}
-          - name: SEARCH_CLUSTERROLE_NAME
-            value: {{ .Values.org }}:{{ .Release.Name }}:addons:{{ .Values.klusterletAddonController.addons.search.name }}
-          - name: WORKMGR_CLUSTERROLE_NAME
-            value: {{ .Values.org }}:{{ .Release.Name }}:addons:{{ .Values.klusterletAddonController.addons.workmgr.name }}
+          - name: ADDON_CLUSTERROLE_PREFIX
+            value: "{{ .Values.org }}:{{ .Release.Name }}:addons:"
+          - name: APPMGR_NAME
+            value: {{ .Values.klusterletAddonController.addons.appmgr.name }}
+          - name: CERTPOLICYCTRL_NAME
+            value: {{ .Values.klusterletAddonController.addons.certpolicyctrl.name }}
+          - name: IAMPOLICYCTRL_NAME
+            value: {{ .Values.klusterletAddonController.addons.iampolicyctrl.name }}
+          - name: POLICYCTRL_NAME
+            value: {{ .Values.klusterletAddonController.addons.policyctrl.name }}
+          - name: SEARCH_NAME
+            value: {{ .Values.klusterletAddonController.addons.search.name }}
+          - name: WORKMGR_NAME
+            value: {{ .Values.klusterletAddonController.addons.workmgr.name }}
           - name: POD_NAMESPACE
             valueFrom:
               fieldRef:

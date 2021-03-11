@@ -3,7 +3,7 @@
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
-  name: {{ .Values.org }}:{{ .Release.Name }}:{{ .Values.klusterletAddonController.addons.appmgr.name }}
+  name: {{ .Values.org }}:{{ .Release.Name }}:addons:{{ .Values.klusterletAddonController.addons.appmgr.name }}
 rules:
 - apiGroups:
   - ""
@@ -57,7 +57,7 @@ rules:
   resources:
   - leases
   resourceNames:
-  - {{ .ManagedClusterAddonName }}
+  - {{ .Values.klusterletAddonController.addons.appmgr.name }}
   verbs:
   - get
   - list

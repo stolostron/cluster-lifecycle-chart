@@ -10,7 +10,7 @@ rules:
   resources:
   - leases
   resourceNames:
-  - {{ .ManagedClusterAddonName }}
+  - {{ .Values.klusterletAddonController.addons.certpolicyctrl.name }}
   verbs:
   - get
   - list

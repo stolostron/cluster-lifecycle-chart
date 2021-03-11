@@ -16,7 +16,7 @@ rules:
   resources:
   - leases
   resourceNames:
-  - {{ .ManagedClusterAddonName }}
+  - {{ .Values.klusterletAddonController.addons.search.name }}
   verbs:
   - get
   - list

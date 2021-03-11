@@ -20,7 +20,7 @@ rules:
 - apiGroups:
   - coordination.k8s.io
   resourceNames:
-  - {{ .ManagedClusterAddonName }}
+  - {{ .Values.klusterletAddonController.addons.workmgr.name }}
   resources:
   - leases
   verbs:
