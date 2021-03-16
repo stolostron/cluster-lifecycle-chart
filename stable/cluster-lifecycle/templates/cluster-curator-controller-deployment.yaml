@@ -5,6 +5,16 @@ kind: Deployment
 metadata:  
   name: {{ .Values.ClusterCuratorController.name }}
   namespace: {{ .Release.Namespace }}
+  labels:
+    app: {{ .Values.ClusterCuratorController.name }}
+    chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
+    component: {{ .Values.ClusterCuratorController.name }}
+    heritage: {{ .Release.Service }}
+    release: {{ .Release.Name }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+    app.kubernetes.io/name: {{ .Values.ClusterCuratorController.name }}
+    helm.sh/chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
 spec:
   replicas: {{ .Values.hubconfig.replicaCount }}
   selector:
@@ -22,16 +32,16 @@ spec:
       containers:
       - command:
         - ./cluster-curator-controller
-        - "-v"
-        - "2"
         image: "{{ .Values.global.imageOverrides.cluster_curator_controller }}"
         env:
         - name: POD_NAME
           valueFrom:
             fieldRef:
               fieldPath: metadata.name
+        - name: IMAGE_URI
+          value: "{{ .Values.global.imageOverrides.cluster_curator_controller }}"
         imagePullPolicy: Always
         name: {{ .Values.ClusterCuratorController.name }}
         resources:
-{{ toYaml .Values.klusterletAddonController.resources | indent 10 }}
+{{ toYaml .Values.ClusterCuratorController.resources | indent 10 }}
       serviceAccountName: {{ .Values.ClusterCuratorController.shortName }}
