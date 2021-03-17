@@ -1,0 +1,47 @@
+#Copyright Contributors to the Open Cluster Management project.
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:  
+  name: {{ .Values.ClusterCuratorController.name }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app: {{ .Values.ClusterCuratorController.name }}
+    chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
+    component: {{ .Values.ClusterCuratorController.name }}
+    heritage: {{ .Release.Service }}
+    release: {{ .Release.Name }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+    app.kubernetes.io/name: {{ .Values.ClusterCuratorController.name }}
+    helm.sh/chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
+spec:
+  replicas: {{ .Values.hubconfig.replicaCount }}
+  selector:
+    matchLabels:
+      name: {{ .Values.ClusterCuratorController.name }}
+  template:
+    metadata:
+      labels:
+        name: {{ .Values.ClusterCuratorController.name }}
+    spec:
+      {{- if .Values.global.imagePullSecret }}
+      imagePullSecrets:
+        - name: {{ .Values.global.imagePullSecret }}
+      {{- end }}
+      containers:
+      - command:
+        - ./cluster-curator-controller
+        image: "{{ .Values.global.imageOverrides.cluster_curator_controller }}"
+        env:
+        - name: POD_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.name
+        - name: IMAGE_URI
+          value: "{{ .Values.global.imageOverrides.cluster_curator_controller }}"
+        imagePullPolicy: Always
+        name: {{ .Values.ClusterCuratorController.name }}
+        resources:
+{{ toYaml .Values.ClusterCuratorController.resources | indent 10 }}
+      serviceAccountName: {{ .Values.ClusterCuratorController.shortName }}
