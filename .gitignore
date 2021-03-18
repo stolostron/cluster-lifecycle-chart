@@ -6,3 +6,4 @@ build-harness
 build-harness-extensions
 .DS_Store
 *.tgz
+!.github
