@@ -67,7 +67,7 @@ spec:
           operator: Exists
       containers:
       - name: klusterlet-addon-controller
-        image: "{{ .Values.global.imageOverrides.endpoint_operator }}"
+        image: "{{ .Values.global.imageOverrides.klusterlet_addon_controller }}"
         imagePullPolicy: {{ .Values.global.imagePullPolicy }}
         resources:
 {{ toYaml .Values.klusterletAddonController.resources | indent 10 }}

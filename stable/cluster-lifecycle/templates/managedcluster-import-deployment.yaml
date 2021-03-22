@@ -72,7 +72,7 @@ spec:
           operator: Exists
       containers:
       - name: managedcluster-import-controller
-        image: "{{ .Values.global.imageOverrides.rcm_controller }}"
+        image: "{{ .Values.global.imageOverrides.managedcluster_import_controller }}"
         imagePullPolicy: {{ .Values.global.imagePullPolicy }}
         resources:
 {{ toYaml .Values.clusterController.resources | indent 10 }}

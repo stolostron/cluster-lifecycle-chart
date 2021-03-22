@@ -146,10 +146,10 @@ global:
   imageRepository: "quay.io/open-cluster-management"
   imageTagPostfix: ""
   imageOverrides: 
-    rcm_controller: "quay.io/open-cluster-management/rcm-controller:2.1.0"
+    managedcluster_import_controller: "quay.io/open-cluster-management/managedcluster-import-controller:2.1.0"
     registration_operator: "quay.io/open-cluster-management/registration-operator:0.0.1"
     registration: "quay.io/open-cluster-management/registration:0.0.1"
     cluster_curator_controller: "registry.ci.openshift.org/open-cluster-management/2.3:cluster-curator-controller"
     work: "quay.io/open-cluster-management/work:0.0.1"
-    endpoint_operator: "quay.io/open-cluster-management/endpoint-operator:2.1.0"
+    klusterlet_addon_controller: "quay.io/open-cluster-management/klusterlet-addon-controller:2.1.0"
     clusterlifecycle_state_metrics: "quay.io/open-cluster-management/clusterlifecycle-state-metrics:2.2.0"
