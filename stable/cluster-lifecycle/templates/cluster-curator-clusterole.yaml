@@ -14,25 +14,77 @@ metadata:
     app.kubernetes.io/name: {{ .Values.ClusterCuratorController.name }}
     helm.sh/chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
 rules:
-# New Rules added to ClusterInstaller
-# Leader Lock requires configmaps(create&get) and pods(get)
 - apiGroups: ["tower.ansible.com","batch",""]
-  resources: ["ansiblejobs","jobs","serviceaccounts","configmaps"]
-  verbs: ["create","get"]
+  resources: ["ansiblejobs","jobs","secrets","serviceaccounts"]
+  verbs: ["create"]
 
-- apiGroups: ["rbac.authorization.k8s.io"]
+- apiGroups: ["batch", "hive.openshift.io", "tower.ansible.com",""]
+  resources: ["ansiblejobs","jobs","clusterdeployments","serviceaccounts"]
+  verbs: ["get"]
+
+- apiGroups: ["rbac.authorization.k8s.io",""]
   resources: ["roles","rolebindings"]
   verbs: ["create","get"]
 
-- apiGroups: ["", "hive.openshift.io"]
-  resources: ["configmaps", "clusterdeployments"]
+- apiGroups: ["hive.openshift.io"]
+  resources: ["clusterdeployments"]
   verbs: ["patch"]
 
 - apiGroups: ["internal.open-cluster-management.io",""]
   resources: ["managedclusterinfos","pods"]
   verbs: ["get"]
 
-# Specific to the controller only
+# Remove after ClusterCurator controller committed
 - apiGroups: ["cluster.open-cluster-management.io"] 
   resources: ["managedclusters"]
   verbs: ["watch","list"]
+
+# ClusterCurator apiGroup
+- apiGroups:
+  - cluster.open-cluster-management.io
+  resources:
+  - clustercurators
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - cluster.open-cluster-management.io
+  resources:
+  - clustercurators/status
+  verbs:
+  - get
+  - patch
+  - update
+
+# Leader election
+- apiGroups:
+  - ""
+  resources:
+  - configmaps
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - update
+  - patch
+  - delete
+- apiGroups:
+  - ""
+  resources:
+  - configmaps/status
+  verbs:
+  - get
+  - update
+  - patch
+- apiGroups:
+  - ""
+  resources:
+  - events
+  verbs:
+  - create
