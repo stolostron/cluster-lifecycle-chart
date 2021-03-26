@@ -31,7 +31,7 @@ spec:
       {{- end }}
       containers:
       - command: ["/bin/sh","-c"]
-        args: ["./cluster_curator_controller || ./manager -enable-leader-election"]
+        args: ["./cluster-curator-controller || ./manager -enable-leader-election"]
         image: "{{ .Values.global.imageOverrides.cluster_curator_controller }}"
         env:
         - name: POD_NAME
