@@ -84,6 +84,7 @@ rules:
   - cluster.open-cluster-management.io
   resources:
   - managedclusters
+  - managedclusters/status
   - managedclusters/finalizers
   verbs:
   - create
