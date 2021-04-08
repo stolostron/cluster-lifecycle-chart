@@ -74,6 +74,13 @@ spec:
       - name: managedcluster-import-controller
         image: "{{ .Values.global.imageOverrides.managedcluster_import_controller }}"
         imagePullPolicy: {{ .Values.global.imagePullPolicy }}
+        securityContext:
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop:
+            - ALL
+          privileged: false
+          readOnlyRootFilesystem: true
         resources:
 {{ toYaml .Values.clusterController.resources | indent 10 }}
         env:

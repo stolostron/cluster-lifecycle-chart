@@ -69,6 +69,13 @@ spec:
       - name: klusterlet-addon-controller
         image: "{{ .Values.global.imageOverrides.klusterlet_addon_controller }}"
         imagePullPolicy: {{ .Values.global.imagePullPolicy }}
+        securityContext:
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop:
+            - ALL
+          privileged: false
+          readOnlyRootFilesystem: true
         resources:
 {{ toYaml .Values.klusterletAddonController.resources | indent 10 }}
         env:

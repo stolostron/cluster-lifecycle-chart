@@ -45,7 +45,14 @@ spec:
       containers:
       - name: {{ .Values.clusterlifecycleStateMetrics.name }}
         image: "{{ .Values.global.imageOverrides.clusterlifecycle_state_metrics }}"
-        imagePullPolicy: IfNotPresent
+        imagePullPolicy: {{ .Values.global.imagePullPolicy }}
+        securityContext:
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop:
+            - ALL
+          privileged: false
+          readOnlyRootFilesystem: true
         resources:
 {{ toYaml .Values.clusterlifecycleStateMetrics.resources | indent 10 }}
         args:
