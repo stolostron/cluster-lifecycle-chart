@@ -176,7 +176,6 @@ global:
   imagePullPolicy: IfNotPresent 
   imagePullSecret: null
   imageRepository: "quay.io/open-cluster-management"
-  imageTagPostfix: ""
   imageOverrides: 
     managedcluster_import_controller: "quay.io/open-cluster-management/managedcluster-import-controller:2.3.0"
     registration_operator: "quay.io/open-cluster-management/registration-operator:0.0.1"
