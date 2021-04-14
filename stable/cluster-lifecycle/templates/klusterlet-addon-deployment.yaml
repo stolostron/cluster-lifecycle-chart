@@ -88,8 +88,6 @@ spec:
             value: {{ .Values.klusterletAddonController.name }}
           - name: USE_SHA_MANIFEST
             value: "{{ .Values.global.useShaManifest }}"
-          - name: IMAGE_TAG_POSTFIX
-            value: {{ .Values.global.imageTagPostfix }}
           - name: DEFAULT_IMAGE_PULL_SECRET
             value: {{ .Values.global.imagePullSecret }}
           - name: DEFAULT_IMAGE_REGISTRY
