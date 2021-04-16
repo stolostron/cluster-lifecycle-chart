@@ -35,9 +35,52 @@ ClusterCuratorController:
       cpu: "3m"        # Runs < 2m most of the time
       memory: "25Mi"   # Runs between 25-28Mi
 
+ProviderCredentialController:
+  name: provider-credential-controller
+  shortName: provider-credential
+  resources:
+    limits:
+      cpu: "20m"
+      memory: "500Mi"
+    requests:
+      cpu: "3m"
+      memory: "65Mi"
+
 hubconfig:
   nodeSelector: null
   replicaCount: 2
+
+providerCredentialAffinity:
+  nodeAffinity:
+    requiredDuringSchedulingIgnoredDuringExecution:
+      nodeSelectorTerms:
+      - matchExpressions:
+        - key: beta.kubernetes.io/arch
+          operator: In
+          values:
+          - amd64
+          - ppc64le
+          - s390x
+  podAntiAffinity:
+    preferredDuringSchedulingIgnoredDuringExecution:
+    - weight: 70
+      podAffinityTerm:
+        topologyKey: topology.kubernetes.io/zone
+        labelSelector:
+          matchExpressions:
+          - key: ocm-antiaffinity-selector
+            operator: In
+            values:
+            - provider-credential-controller
+    - weight: 35
+      podAffinityTerm:
+        topologyKey: kubernetes.io/hostname
+        labelSelector:
+          matchExpressions:
+          - key: ocm-antiaffinity-selector
+            operator: In
+            values:
+            - provider-credential-controller
 
 clusterCuratorAffinity:
   nodeAffinity:
@@ -181,6 +224,7 @@ global:
     registration_operator: "quay.io/open-cluster-management/registration-operator:0.0.1"
     registration: "quay.io/open-cluster-management/registration:0.0.1"
     cluster_curator_controller: "registry.ci.openshift.org/open-cluster-management/2.3:cluster-curator-controller"
+    provider_credential_controller: "registry.ci.openshift.org/open-cluster-management/2.3:provider-credential-controller"
     work: "quay.io/open-cluster-management/work:0.0.1"
     klusterlet_addon_controller: "quay.io/open-cluster-management/klusterlet-addon-controller:2.3.0"
     clusterlifecycle_state_metrics: "quay.io/open-cluster-management/clusterlifecycle-state-metrics:2.2.0"
