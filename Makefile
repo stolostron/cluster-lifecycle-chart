@@ -1,4 +1,5 @@
 # Copyright Contributors to the Open Cluster Management project
+BEFORE_SCRIPT := $(shell build/before-make.sh)
 
 CHART_NAME ?= cluster-lifecycle
 STABLE_CHART ?= stable/$(CHART_NAME)
@@ -11,6 +12,14 @@ CHART_FILE ?= $(CHART_NAME)-$(VERSION).tgz
 .PHONY: build lint 
 
 CHART_VERSION := $(SEMVERSION)
+
+.PHONY: check
+## Runs a set of required checks
+check: check-copyright lint
+
+.PHONY: check-copyright
+check-copyright:
+	@build/check-copyright.sh
 
 lint:
 	helm lint $(STABLE_CHART)
