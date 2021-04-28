@@ -35,6 +35,14 @@ rules:
   resources: ["managedclusterinfos","pods"]
   verbs: ["get"]
 
+- apiGroups: ["view.open-cluster-management.io"]
+  resources: ["managedclusterviews"]
+  verbs: ["get", "create", "update", "delete"]
+
+- apiGroups: ["action.open-cluster-management.io"]
+  resources: ["managedclusteractions"]
+  verbs: ["get", "create", "update", "delete"]
+
 # Remove after ClusterCurator controller committed
 - apiGroups: ["cluster.open-cluster-management.io"] 
   resources: ["managedclusters"]
