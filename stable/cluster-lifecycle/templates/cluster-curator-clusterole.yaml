@@ -20,7 +20,7 @@ rules:
   verbs: ["create"]
 
 - apiGroups: ["batch", "hive.openshift.io", "tower.ansible.com",""]
-  resources: ["ansiblejobs","jobs","clusterdeployments","serviceaccounts"]
+  resources: ["ansiblejobs","jobs","clusterdeployments","serviceaccounts", "machinepools"]
   verbs: ["get"]
 
 - apiGroups: ["rbac.authorization.k8s.io",""]
