@@ -40,8 +40,8 @@ ProviderCredentialController:
   shortName: provider-credential
   resources:
     limits:
-      cpu: "20m"
-      memory: "500Mi"
+      memory: "2Gi"
+      cpu: "500m"
     requests:
       cpu: "3m"
       memory: "65Mi"
