@@ -229,4 +229,4 @@ global:
     provider_credential_controller: "registry.ci.openshift.org/open-cluster-management/2.3:provider-credential-controller"
     work: "quay.io/open-cluster-management/work:0.0.1"
     klusterlet_addon_controller: "quay.io/open-cluster-management/klusterlet-addon-controller:2.3.0"
-    clusterlifecycle_state_metrics: "quay.io/open-cluster-management/clusterlifecycle-state-metrics:2.2.0"
+    clusterlifecycle_state_metrics: "quay.io/open-cluster-management/clusterlifecycle-state-metrics:2.3.0"

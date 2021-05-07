@@ -8,7 +8,7 @@
 
 The following components are deployed with the cluster-lifecycle-chart:
 - [managedcluster-import-controller](https://github.com/open-cluster-management/managedcluster-import-controller)
-- [klusterlet-addon-controller](https://github.com/open-cluster-management/klusterlet-addon-controller) 
+- [klusterlet-addon-controller](https://github.com/open-cluster-management/klusterlet-addon-controller)
 - [cluster-curator-controller](https://github.com/open-cluster-management/cluster-curator-controller)
 - [clusterlifecycle-state-metrics](https://github.com/open-cluster-management/clusterlifecycle-state-metrics)
 
@@ -16,7 +16,7 @@ Go to the [Contributing guide](CONTRIBUTING.md) to learn how to get involved.
 
 ## Getting started
 
-### Steps for development: 
+### Steps for development:
 
 - To push that chart onto an ACM environment for test run:
 
@@ -25,9 +25,13 @@ oc annotate mch multiclusterhub mch-pause=true -n open-cluster-management --over
 
 helm get values  -n open-cluster-management `helm ls -n open-cluster-management | cut -d' ' -f1 | grep cluster-lifecycle` > old-values.yaml
 
+cp stable/cluster-lifecycle/values.yaml new-values.yaml
+
+#Edit new-values.yaml and replace global.imageOverrides: with the same section in old-values.yaml
+
 oc delete appsub cluster-lifecycle-sub  -n open-cluster-management
 
-helm install cluster-lifecycle stable/cluster-lifecycle -f stable/cluster-lifecycle/values.yaml -n open-cluster-management
+helm install cluster-lifecycle stable/cluster-lifecycle -f new-values.yaml -n open-cluster-management
 ```
 
 - once you finished your test run again:
