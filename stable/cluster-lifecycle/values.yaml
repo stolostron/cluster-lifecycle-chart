@@ -30,7 +30,7 @@ ClusterCuratorController:
   resources:
     limits:
       cpu: "10m"
-      memory: "45Mi"
+      memory: "128Mi"
     requests:
       cpu: "3m"        # Runs < 2m most of the time
       memory: "25Mi"   # Runs between 25-28Mi
@@ -216,12 +216,12 @@ clusterlifecycleStateMetrics:
       memory: "256Mi"
       cpu: "500m"
 
-global: 
+global:
   useShaManifest: true
-  imagePullPolicy: IfNotPresent 
+  imagePullPolicy: IfNotPresent
   imagePullSecret: null
   imageRepository: "quay.io/open-cluster-management"
-  imageOverrides: 
+  imageOverrides:
     managedcluster_import_controller: "quay.io/open-cluster-management/managedcluster-import-controller:2.3.0"
     registration_operator: "quay.io/open-cluster-management/registration-operator:0.0.1"
     registration: "quay.io/open-cluster-management/registration:0.0.1"
