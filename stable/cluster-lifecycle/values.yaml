@@ -36,11 +36,19 @@ ClusterCuratorController:
       memory: "25Mi"   # Runs between 25-28Mi
 
 ProviderCredentialController:
+  initContainerName: secret-update
   name: provider-credential-controller
   shortName: provider-credential
   resources:
     limits:
       memory: "2Gi"
+      cpu: "500m"
+    requests:
+      cpu: "3m"
+      memory: "65Mi"
+  initContainerresources:
+    limits:
+      memory: "256Mi"
       cpu: "500m"
     requests:
       cpu: "3m"
