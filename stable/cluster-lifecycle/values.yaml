@@ -16,6 +16,7 @@ arch:
 
 clusterController:
   name: managedcluster-import-controller
+  maxConcurrentReconciles: "10"
   resources:
     requests:
       memory: "96Mi"

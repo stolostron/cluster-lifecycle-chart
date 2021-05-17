@@ -89,6 +89,8 @@ spec:
             valueFrom:
               fieldRef:
                 fieldPath: metadata.name
+          - name: MAX_CONCURRENT_RECONCILES
+            value: "{{.Values.clusterController.maxConcurrentReconciles}}"
           - name: OPERATOR_NAME
             value: {{ .Values.clusterController.name }}
           - name: DEFAULT_IMAGE_PULL_SECRET
