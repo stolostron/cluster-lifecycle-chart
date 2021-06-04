@@ -29,7 +29,7 @@ rules:
 
 - apiGroups: ["hive.openshift.io"]
   resources: ["clusterdeployments"]
-  verbs: ["patch"]
+  verbs: ["patch","delete"]
 
 - apiGroups: ["internal.open-cluster-management.io",""]
   resources: ["managedclusterinfos","pods"]
@@ -43,10 +43,15 @@ rules:
   resources: ["managedclusteractions"]
   verbs: ["get", "create", "update", "delete"]
 
-# Remove after ClusterCurator controller committed
-- apiGroups: ["cluster.open-cluster-management.io"] 
-  resources: ["managedclusters"]
-  verbs: ["watch","list"]
+# Only used by the controller
+
+- apiGroups: [""]
+  resources: ["namespaces"]
+  verbs: ["delete"]
+
+- apiGroups: [""]
+  resources: ["pods"]
+  verbs: ["list"]
 
 # ClusterCurator apiGroup
 - apiGroups:
