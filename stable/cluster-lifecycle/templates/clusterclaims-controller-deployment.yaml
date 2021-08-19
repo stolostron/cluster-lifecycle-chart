@@ -1,0 +1,95 @@
+# Copyright Contributors to the Open Cluster Management project.
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:  
+  name: {{ .Values.ClusterClaimsController.name }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app: {{ .Values.ClusterClaimsController.name }}
+    chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
+    component: {{ .Values.ClusterClaimsController.name }}
+    heritage: {{ .Release.Service }}
+    release: {{ .Release.Name }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+    app.kubernetes.io/name: {{ .Values.ClusterClaimsController.name }}
+    helm.sh/chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
+spec:
+  replicas: {{ .Values.hubconfig.replicaCount }}
+  selector:
+    matchLabels:
+      name: {{ .Values.ClusterClaimsController.name }}
+  template:
+    metadata:
+      labels:
+        name: {{ .Values.ClusterClaimsController.name }}
+        ocm-antiaffinity-selector: "clusterclaims-controller"
+    spec:
+      {{- if .Values.global.imagePullSecret }}
+      imagePullSecrets:
+        - name: {{ .Values.global.imagePullSecret }}
+      {{- end }}
+      {{- with .Values.clusterClaimsAffinity }}
+      affinity:
+{{ toYaml . | indent 8 }}
+      {{- end }}
+      tolerations:
+      - key: dedicated
+        operator: Exists
+        effect: NoSchedule
+      - effect: NoSchedule 
+        key: node-role.kubernetes.io/infra 
+        operator: Exists
+
+      serviceAccountName: {{ .Values.ClusterClaimsController.shortName }}
+      hostNetwork: false
+      hostPID: false
+      hostIPC: false
+      securityContext:
+        runAsNonRoot: true
+      containers:
+      - command:
+          - "./manager-clusterclaims"
+          - "-enable-leader-election"
+        image: "{{ .Values.global.imageOverrides.clusterclaims_controller }}"
+        env:
+        - name: POD_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.name
+        imagePullPolicy: "{{ .Values.global.imagePullPolicy }}"
+        name: {{ .Values.ClusterClaimsController.name }}
+        securityContext:
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop:
+            - ALL
+          privileged: false
+          readOnlyRootFilesystem: true
+        resources:
+{{ toYaml .Values.ClusterClaimsController.resources | indent 10 }}
+      - command:
+        - "./manager-clusterpools-delete"
+        - "-enable-leader-election"
+        image: "{{ .Values.global.imageOverrides.clusterclaims_controller }}"
+        env:
+        - name: POD_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.name
+        imagePullPolicy: "{{ .Values.global.imagePullPolicy }}"
+        name: {{ .Values.ClusterpoolsDeleteController.name }}
+        securityContext:
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop:
+            - ALL
+          privileged: false
+          readOnlyRootFilesystem: true
+        resources:
+{{ toYaml .Values.ClusterClaimsController.resources | indent 10 }}
+      {{- with .Values.hubconfig.nodeSelector }}
+      nodeSelector:
+      {{ toYaml . | indent 8 }}
+      {{- end }}
