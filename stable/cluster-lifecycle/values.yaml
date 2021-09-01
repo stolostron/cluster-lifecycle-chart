@@ -36,6 +36,20 @@ ClusterCuratorController:
       cpu: "3m"        # Runs < 2m most of the time
       memory: "25Mi"   # Runs between 25-28Mi
 
+ClusterClaimsController:
+  name: clusterclaims-controller
+  shortName: clusterclaims
+  resources:
+    limits:
+      cpu: "20m"
+      memory: "500Mi"
+    requests:
+      cpu: "3m"
+      memory: "65Mi"
+
+ClusterpoolsDeleteController:
+  name: clusterpools-delete-controller
+
 ProviderCredentialController:
   name: provider-credential-controller
   shortName: provider-credential
@@ -138,6 +152,38 @@ clusterCuratorAffinity:
             operator: In
             values:
             - cluster-curator-controller
+
+clusterClaimsAffinity:
+  nodeAffinity:
+    requiredDuringSchedulingIgnoredDuringExecution:
+      nodeSelectorTerms:
+      - matchExpressions:
+        - key: beta.kubernetes.io/arch
+          operator: In
+          values:
+          - amd64
+          - ppc64le
+          - s390x
+  podAntiAffinity:
+    preferredDuringSchedulingIgnoredDuringExecution:
+    - weight: 70
+      podAffinityTerm:
+        topologyKey: topology.kubernetes.io/zone
+        labelSelector:
+          matchExpressions:
+          - key: ocm-antiaffinity-selector
+            operator: In
+            values:
+            - clusterclaims-controller
+    - weight: 35
+      podAffinityTerm:
+        topologyKey: kubernetes.io/hostname
+        labelSelector:
+          matchExpressions:
+          - key: ocm-antiaffinity-selector
+            operator: In
+            values:
+            - clusterclaims-controller
 
 affinity:
   nodeAffinity:
@@ -255,3 +301,5 @@ global:
     work: "quay.io/open-cluster-management/work:0.0.1"
     klusterlet_addon_controller: "quay.io/open-cluster-management/klusterlet-addon-controller:2.3.0"
     clusterlifecycle_state_metrics: "quay.io/open-cluster-management/clusterlifecycle-state-metrics:2.3.0"
+    clusterclaims_controller: "quay.io/open-cluster-management/clusterclaims-controller:2.4.0"
+
