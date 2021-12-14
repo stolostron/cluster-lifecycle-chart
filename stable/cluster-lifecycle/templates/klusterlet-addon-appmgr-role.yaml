@@ -64,3 +64,15 @@ rules:
   - patch
   - update
   - watch
+- apiGroups:
+  - apps.open-cluster-management.io
+  resources:
+  - subscriptionreports
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - patch
+  - update
+  - delete
