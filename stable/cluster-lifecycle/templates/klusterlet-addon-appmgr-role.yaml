@@ -67,7 +67,6 @@ rules:
 - apiGroups:
   - apps.open-cluster-management.io
   resources:
-  - subscriptionstatuses
   - subscriptionreports
   verbs:
   - get
