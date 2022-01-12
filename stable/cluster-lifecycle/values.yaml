@@ -291,15 +291,15 @@ global:
   useShaManifest: true
   imagePullPolicy: IfNotPresent
   imagePullSecret: null
-  imageRepository: "quay.io/open-cluster-management"
+  imageRepository: "quay.io/stolostron"
   imageOverrides:
-    managedcluster_import_controller: "quay.io/open-cluster-management/managedcluster-import-controller:2.3.0"
-    registration_operator: "quay.io/open-cluster-management/registration-operator:0.0.1"
-    registration: "quay.io/open-cluster-management/registration:0.0.1"
+    managedcluster_import_controller: "quay.io/stolostron/managedcluster-import-controller:2.3.0"
+    registration_operator: "quay.io/stolostron/registration-operator:0.0.1"
+    registration: "quay.io/stolostron/registration:0.0.1"
     cluster_curator_controller: "registry.ci.openshift.org/open-cluster-management/2.3:cluster-curator-controller"
     provider_credential_controller: "registry.ci.openshift.org/open-cluster-management/2.3:provider-credential-controller"
-    work: "quay.io/open-cluster-management/work:0.0.1"
-    klusterlet_addon_controller: "quay.io/open-cluster-management/klusterlet-addon-controller:2.3.0"
-    clusterlifecycle_state_metrics: "quay.io/open-cluster-management/clusterlifecycle-state-metrics:2.3.0"
-    clusterclaims_controller: "quay.io/open-cluster-management/clusterclaims-controller:2.4.0"
+    work: "quay.io/stolostron/work:0.0.1"
+    klusterlet_addon_controller: "quay.io/stolostron/klusterlet-addon-controller:2.3.0"
+    clusterlifecycle_state_metrics: "quay.io/stolostron/clusterlifecycle-state-metrics:2.3.0"
+    clusterclaims_controller: "quay.io/stolostron/clusterclaims-controller:2.4.0"
 
