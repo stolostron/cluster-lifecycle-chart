@@ -7,10 +7,10 @@
 ## cluster-lifecycle-chart
 
 The following components are deployed with the cluster-lifecycle-chart:
-- [managedcluster-import-controller](https://github.com/open-cluster-management/managedcluster-import-controller)
-- [klusterlet-addon-controller](https://github.com/open-cluster-management/klusterlet-addon-controller)
-- [cluster-curator-controller](https://github.com/open-cluster-management/cluster-curator-controller)
-- [clusterlifecycle-state-metrics](https://github.com/open-cluster-management/clusterlifecycle-state-metrics)
+- [managedcluster-import-controller](https://github.com/stolostron/managedcluster-import-controller)
+- [klusterlet-addon-controller](https://github.com/stolostron/klusterlet-addon-controller)
+- [cluster-curator-controller](https://github.com/stolostron/cluster-curator-controller)
+- [clusterlifecycle-state-metrics](https://github.com/stolostron/clusterlifecycle-state-metrics)
 
 Go to the [Contributing guide](CONTRIBUTING.md) to learn how to get involved.
 
