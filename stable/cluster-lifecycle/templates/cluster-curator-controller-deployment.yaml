@@ -32,16 +32,12 @@ spec:
       {{- end }}
       {{- with .Values.clusterCuratorAffinity }}
       affinity:
-{{ toYaml . | indent 8 }}
+      {{- toYaml . | nindent 8 }}
       {{- end }}
+      {{- with .Values.hubconfig.tolerations }}
       tolerations:
-      - key: dedicated
-        operator: Exists
-        effect: NoSchedule
-      - effect: NoSchedule 
-        key: node-role.kubernetes.io/infra 
-        operator: Exists
-
+      {{- toYaml . | nindent 8 }}
+      {{- end }}
       serviceAccountName: {{ .Values.ClusterCuratorController.shortName }}
       hostNetwork: false
       hostPID: false
@@ -69,8 +65,8 @@ spec:
           privileged: false
           readOnlyRootFilesystem: true
         resources:
-{{ toYaml .Values.ClusterCuratorController.resources | indent 10 }}
+        {{- toYaml .Values.ClusterCuratorController.resources | nindent 10 }}
       {{- with .Values.hubconfig.nodeSelector }}
       nodeSelector:
-      {{ toYaml . | indent 8 }}
+      {{- toYaml . | nindent 8 }}
       {{- end }}

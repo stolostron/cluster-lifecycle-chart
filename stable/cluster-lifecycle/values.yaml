@@ -88,6 +88,13 @@ OldProviderConnectionController:
 hubconfig:
   nodeSelector: null
   replicaCount: 2
+  tolerations:
+    - key: dedicated
+      operator: Exists
+      effect: NoSchedule
+    - effect: NoSchedule
+      key: node-role.kubernetes.io/infra
+      operator: Exists
 
 providerCredentialAffinity:
   nodeAffinity:

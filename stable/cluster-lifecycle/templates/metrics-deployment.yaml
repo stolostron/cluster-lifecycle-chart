@@ -33,15 +33,15 @@ spec:
         app.kubernetes.io/name: {{ .Values.clusterlifecycleStateMetrics.name }}
         helm.sh/chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
     spec:
-    {{- if .Values.global.imagePullSecret }}
+      {{- if .Values.global.imagePullSecret }}
       imagePullSecrets:
         - name: {{ .Values.global.imagePullSecret }}
-    {{- end }}
+      {{- end }}
       serviceAccountName: {{ .Values.clusterlifecycleStateMetrics.name }}-v2
+      {{- with .Values.hubconfig.tolerations }}
       tolerations:
-      - effect: NoSchedule 
-        key: node-role.kubernetes.io/infra 
-        operator: Exists
+      {{- toYaml . | nindent 8 }}
+      {{- end }}
       containers:
       - name: {{ .Values.clusterlifecycleStateMetrics.name }}
         image: "{{ .Values.global.imageOverrides.clusterlifecycle_state_metrics }}"
@@ -54,7 +54,7 @@ spec:
           privileged: false
           readOnlyRootFilesystem: true
         resources:
-{{ toYaml .Values.clusterlifecycleStateMetrics.resources | indent 10 }}
+        {{- toYaml .Values.clusterlifecycleStateMetrics.resources | nindent 10 }}
         args:
           - "--http-port=8080"
           - "--http-telemetry-port=8081"
@@ -89,5 +89,5 @@ spec:
           secretName: {{ .Values.clusterlifecycleStateMetrics.name }}-certs
       {{- with .Values.hubconfig.nodeSelector }}
       nodeSelector:
-      {{ toYaml . | indent 8 }}
+      {{- toYaml . | nindent 8 }}
       {{- end }}
