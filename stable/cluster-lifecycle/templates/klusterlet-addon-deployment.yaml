@@ -37,11 +37,6 @@ spec:
         app.kubernetes.io/managed-by: {{ .Release.Service }}
         app.kubernetes.io/name: {{ .Values.klusterletAddonController.name }}
         helm.sh/chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
-      annotations:
-        productName: "Advanced Cluster Management"
-        productID: "product-id"
-        productVersion: 2.1.0
-        scheduler.alpha.kubernetes.io/critical-pod: ''
     spec:
     {{- if .Values.global.imagePullSecret }}
       imagePullSecrets:
@@ -94,18 +89,6 @@ spec:
             value: {{ .Values.global.imageRepository }}
           - name: ADDON_CLUSTERROLE_PREFIX
             value: "{{ .Values.org }}:{{ .Release.Name }}:addons:"
-          - name: APPMGR_NAME
-            value: {{ .Values.klusterletAddonController.addons.appmgr.name }}
-          - name: CERTPOLICYCTRL_NAME
-            value: {{ .Values.klusterletAddonController.addons.certpolicyctrl.name }}
-          - name: IAMPOLICYCTRL_NAME
-            value: {{ .Values.klusterletAddonController.addons.iampolicyctrl.name }}
-          - name: POLICYCTRL_NAME
-            value: {{ .Values.klusterletAddonController.addons.policyctrl.name }}
-          - name: SEARCH_NAME
-            value: {{ .Values.klusterletAddonController.addons.search.name }}
-          - name: WORKMGR_NAME
-            value: {{ .Values.klusterletAddonController.addons.workmgr.name }}
           - name: POD_NAMESPACE
             valueFrom:
               fieldRef:
