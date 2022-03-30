@@ -38,10 +38,10 @@ spec:
         app.kubernetes.io/name: {{ .Values.klusterletAddonController.name }}
         helm.sh/chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
     spec:
-    {{- if .Values.global.imagePullSecret }}
+      {{- if .Values.global.imagePullSecret }}
       imagePullSecrets:
         - name: {{ .Values.global.imagePullSecret }}
-    {{- end }}
+      {{- end }}
       serviceAccountName: {{ .Values.klusterletAddonController.name }}-v2
       hostNetwork: false
       hostPID: false
@@ -51,15 +51,12 @@ spec:
         runAsNonRoot: true
       {{- with .Values.klusterletAddonControllerAffinity }}
       affinity:
-{{ toYaml . | indent 8 }}
-    {{- end }}
+      {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.hubconfig.tolerations }}
       tolerations:
-        - key: dedicated
-          operator: Exists
-          effect: NoSchedule
-        - effect: NoSchedule 
-          key: node-role.kubernetes.io/infra 
-          operator: Exists
+      {{- toYaml . | nindent 8 }}
+      {{- end }}
       containers:
       - name: klusterlet-addon-controller
         image: "{{ .Values.global.imageOverrides.klusterlet_addon_controller }}"
@@ -72,7 +69,7 @@ spec:
           privileged: false
           readOnlyRootFilesystem: true
         resources:
-{{ toYaml .Values.klusterletAddonController.resources | indent 10 }}
+        {{- toYaml .Values.klusterletAddonController.resources | nindent 10 }}
         env:
           - name: WATCH_NAMESPACE
           - name: POD_NAME
@@ -95,5 +92,5 @@ spec:
                 fieldPath: metadata.namespace
       {{- with .Values.hubconfig.nodeSelector }}
       nodeSelector:
-      {{ toYaml . | indent 8 }}
+      {{- toYaml . | nindent 8 }}
       {{- end }}
